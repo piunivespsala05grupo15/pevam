@@ -1,0 +1,55 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>CADASTRAR <strong>LOTAÇÃO</strong></h1>
+    <form id="cadastrarLotacaoForm">
+        {% csrf_token %}
+        
+        <div class="mb-3 row">
+            <label for="id_nome" class="col-sm-2 col-form-label"><strong>LOTAÇÃO</strong></label>
+            <div class="col-sm-4">
+                {{ form.nome }}
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <div class="col-sm-4 offset-sm-2 text-end">
+                <button type="submit" class="btn btn-danger">CADASTRAR</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Mensagem de sucesso/erro -->
+    <div id="mensagem" class="mt-3"></div>
+</div>
+
+<script>
+    document.getElementById('cadastrarLotacaoForm').addEventListener('submit', function(e) {
+        e.preventDefault();  // Evita o recarregamento da página
+
+        const formData = new FormData(this);  // Coleta os dados do formulário
+
+        fetch('{% url "cadastrar_lotacao" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',  // Adiciona o token CSRF ao cabeçalho
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const mensagemDiv = document.getElementById('mensagem');
+            if (data.status === 'success') {
+                mensagemDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+            } else {
+                mensagemDiv.innerHTML = `<div class="alert alert-danger">Erro: ${data.errors.nome[0]}</div>`;
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            document.getElementById('mensagem').innerHTML = `<div class="alert alert-danger">Erro ao cadastrar lotação.</div>`;
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+
+  <a class="navbar-brand" href="{% url 'home' %}">
+    {% load static%}<img src="{% static 'images/red_cross.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+  </a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          CADASTRAR 
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="#">LOCAL DE ATENDIMENTO</a>
+          <a class="dropdown-item" href="#">PESSOA</a>
+          <a class="dropdown-item" href="#">CONTATO DE EMERGÊNCIA</a>
+          <a class="dropdown-item" href="#">TIPO DE EVENTO CRÍTICO</a>
+          <a class="dropdown-item" href="#">LOTAÇÃO</a>
+        </div>
+      </li>
+
+      <li class="nav-item"></li>
+        <a class="nav-link" href="#">GERAR PEVAM</a>
+      </li>
+      
+    </ul>
+  </div>
+</nav>

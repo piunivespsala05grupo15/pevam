@@ -1,0 +1,74 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>CADASTRAR <strong>EVENTO CRÍTICO</strong></h1>
+    <form id="cadastrarEventoForm">
+        {% csrf_token %}
+        
+        <div class="mb-3 row">
+            <label for="id_tipo_evento" class="col-sm-2 col-form-label"><strong>TIPO DE EVENTO CRÍTICO</strong></label>
+            <div class="col-sm-4">
+                <select id="id_tipo_evento" name="tipo_evento" class="form-select" required>
+                    <option value="" disabled selected>Escolha um tipo de evento</option>
+                    <option value="acidente">Acidente</option>
+                    <option value="incendio">Incêndio</option>
+                    <option value="emergencia_medica">Emergência Médica</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="mb-3 row">
+            <div class="col-sm-4 offset-sm-2 text-end">
+                <button type="submit" class="btn btn-danger">CADASTRAR</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Mensagem de sucesso/erro -->
+    <div id="mensagem" class="mt-3"></div>
+</div>
+
+<script>
+    document.getElementById('cadastrarEventoForm').addEventListener('submit', function(e) {
+        e.preventDefault();  // Evita o recarregamento da página
+
+        const formData = new FormData(this);  // Coleta os dados do formulário
+
+        fetch('{% url "cadastrar_evento_critico" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',  // Adiciona o token CSRF ao cabeçalho
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sucesso!',
+                    text: 'Evento crítico cadastrado com sucesso!',
+                    confirmButtonText: 'Ok'
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: data.message || 'Erro ao cadastrar evento crítico.',
+                    confirmButtonText: 'Ok'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro!',
+                text: 'Erro ao cadastrar evento crítico. Por favor, tente novamente.',
+                confirmButtonText: 'Ok'
+            });
+        });
+    });
+</script>
+{% endblock %}
