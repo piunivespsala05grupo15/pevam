@@ -1,0 +1,167 @@
+
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>CADASTRAR <strong>HOSPITAL</strong></h1>
+    <form id="cadastroHospitalForm">
+        {% csrf_token %}
+
+        <div class="mb-3 row">
+            <label for="nome" class="col-sm-2 col-form-label"><strong>NOME</strong></label>
+            <div class="col-sm-4">
+                <input type="text" id="nome" name="nome" class="form-control" placeholder="Nome do Hospital" required>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="cep" class="col-sm-2 col-form-label"><strong>CEP</strong></label>
+            <div class="col-sm-4">
+                <input type="text" id="cep" name="cep" class="form-control" placeholder="Digite o CEP" maxlength="8" required>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="logradouro" class="col-sm-2 col-form-label"><strong>LOGRADOURO</strong></label>
+            <div class="col-sm-4">
+                <input type="text" id="logradouro" name="logradouro" class="form-control" placeholder="Logradouro" readonly required>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="numero" class="col-sm-2 col-form-label"><strong>NÚMERO</strong></label>
+            <div class="col-sm-4">
+                <input type="text" id="numero" name="numero" class="form-control" placeholder="Número" required>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="complemento" class="col-sm-2 col-form-label"><strong>COMPLEMENTO</strong></label>
+            <div class="col-sm-4">
+                <input type="text" id="complemento" name="complemento" class="form-control" placeholder="Complemento">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="bairro" class="col-sm-2 col-form-label"><strong>BAIRRO</strong></label>
+            <div class="col-sm-4">
+                <input type="text" id="bairro" name="bairro" class="form-control" placeholder="Bairro" readonly required>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="cidade" class="col-sm-2 col-form-label"><strong>CIDADE</strong></label>
+            <div class="col-sm-4">
+                <input type="text" id="cidade" name="cidade" class="form-control" placeholder="Cidade" readonly required>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="latitude" class="col-sm-2 col-form-label"><strong>LATITUDE</strong></label>
+            <div class="col-sm-4">
+                <input type="text" id="latitude" name="latitude" class="form-control" placeholder="Latitude" required>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="longitude" class="col-sm-2 col-form-label"><strong>LONGITUDE</strong></label>
+            <div class="col-sm-4">
+                <input type="text" id="longitude" name="longitude" class="form-control" placeholder="Longitude" required>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="telefone" class="col-sm-2 col-form-label"><strong>TELEFONE</strong></label>
+            <div class="col-sm-4">
+                <input type="text" id="telefone" name="telefone" class="form-control" placeholder="Telefone" maxlength="10" required>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <div class="col-sm-4 offset-sm-2 text-end">
+                <button type="submit" class="btn btn-danger">SALVAR HOSPITAL</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Mensagem de sucesso/erro -->
+    <div id="mensagem" class="mt-3"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.getElementById('cadastroHospitalForm').addEventListener('submit', function(event) {
+    event.preventDefault();  // Impede o envio padrão do formulário
+    const form = event.target;
+    const formData = new FormData(form);
+
+    fetch('{% url "hospital" %}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso!',
+                text: 'Hospital cadastrado com sucesso!',
+                confirmButtonText: 'Ok'
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro!',
+                text: data.message || 'Erro ao cadastrar hospital.',
+                confirmButtonText: 'Ok'
+            });
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro!',
+            text: 'Erro ao enviar o formulário. Tente novamente mais tarde.',
+            confirmButtonText: 'Ok'
+        });
+        console.error("Erro:", error);
+    });
+});
+
+// Lógica para buscar o CEP (mesma lógica usada anteriormente)
+document.getElementById('cep').addEventListener('blur', function() {
+    const cep = this.value.replace(/\D/g, '');
+    if (cep.length === 8) {
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.erro) {
+                    document.getElementById('logradouro').value = data.logradouro;
+                    document.getElementById('bairro').value = data.bairro;
+                    document.getElementById('cidade').value = data.localidade;
+                    document.getElementById('mensagem').textContent = ''; // Limpa mensagem de erro
+                } else {
+                    document.getElementById('mensagem').textContent = 'CEP não encontrado.';
+                    limparCamposEndereco();
+                }
+            })
+            .catch(() => {
+                document.getElementById('mensagem').textContent = 'Erro ao buscar o CEP.';
+                limparCamposEndereco();
+            });
+    } else {
+        document.getElementById('mensagem').textContent = 'CEP inválido.';
+        limparCamposEndereco();
+    }
+});
+
+function limparCamposEndereco() {
+    document.getElementById('logradouro').value = '';
+    document.getElementById('bairro').value = '';
+    document.getElementById('cidade').value = '';
+}
+</script>
+{% endblock %}

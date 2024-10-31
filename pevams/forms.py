@@ -1,10 +1,10 @@
 from django import forms
-from .models import Cadastro, ContatoEmergencia, EventoCritico, Lotacao
+from .models import Policial, ContatoEmergencia
 
-class CadastroForm(forms.ModelForm):
+class PolicialForm(forms.ModelForm):
     class Meta:
-        model = Cadastro
-        fields = ['numero_registro', 'nome', 'lotacao', 'tipo_sanguineo', 'plano_saude']
+        model = Policial
+        fields = ['numero_registro', 'nome', 'lotacao', 'tipo_sanguineo', 'plano_saude', 'numero_plasau']
 
         widgets = {
             'numero_registro': forms.TextInput(attrs={
@@ -27,27 +27,18 @@ class CadastroForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'UNIMED',
             }),
+            'numero_plasau': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '000000000',
+            }),
         }
 
 class ContatoEmergenciaForm(forms.ModelForm):
     class Meta:
         model = ContatoEmergencia
-        fields = ['nome_contato', 'telefone_contato']
+        fields = ['nome_contato', 'celular_contato', 'email_contato']
         widgets = {
             'nome_contato': forms.TextInput(attrs={'placeholder': 'Nome do Contato', 'class': 'form-control'}),
-            'telefone_contato': forms.TextInput(attrs={'placeholder': 'Telefone do Contato', 'class': 'form-control'}),
-        }
-
-class EventoCriticoForm(forms.ModelForm):
-    class Meta:
-        model = EventoCritico
-        fields = ['tipo_evento']
-
-class LotacaoForm(forms.ModelForm):
-    class Meta:
-        model = Lotacao
-        fields = ['nome']
-
-        widgets = {
-            'nome': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'DELEGACIA DE CAMPINAS'}),
+            'celular_contato': forms.TextInput(attrs={'placeholder': 'Celular do Contato', 'class': 'form-control'}),
+            'email': forms.TextInput(attrs={'placeholder': 'Email do Contato', 'class': 'form-control'}),
         }

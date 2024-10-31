@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import Cadastro, ContatoEmergencia, EventoCritico, Lotacao
+from .models import Policial, ContatoEmergencia, Local, Hospital
 
-admin.site.register(Cadastro)
+admin.site.register(Policial)
 admin.site.register(ContatoEmergencia)
-admin.site.register(EventoCritico)
-admin.site.register(Lotacao)
+admin.site.register(Local)
+admin.site.register(Hospital)
+
