@@ -7,4 +7,5 @@ urlpatterns = [
     path('contato_emergencia/', views.contato_emergencia, name='contato_emergencia'),
     path('local/', views.local, name="local"),
     path('hospital/', views.hospital, name="hospital"),
+    path('pevam/', views.criar_pevam, name='criar_pevam'),
 ]

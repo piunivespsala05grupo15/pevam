@@ -4,6 +4,13 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Policial, Local, Hospital
 from .forms import PolicialForm, ContatoEmergenciaForm
+from .geocoding import get_geocode
+
+from django.http import HttpResponse
+import qrcode
+import io
+import base64
+
 
 def home(request):
     return render(request, 'sections/home.html')
@@ -110,3 +117,76 @@ def hospital(request):
         return JsonResponse({"success": True, "message": "Hospital salvo com sucesso!"})
     else:
         return render(request, 'sections/hospital.html')
+
+
+def criar_pevam(request):
+    if request.method == 'POST':
+        endereco = request.POST.get('endereco')
+        policiais_ids = request.POST.getlist('policiais')
+        policiais = Policial.objects.filter(id__in=policiais_ids)
+
+        # Obter coordenadas a partir do endereço
+        lat, lng = get_geocode(endereco)
+        
+        if not policiais.exists():
+            return render(request, 'sections/criar_pevam.html', {
+                'policiais': Policial.objects.all(),
+                'selected_policiais': policiais_ids,
+                'error_message': 'Por favor, selecione pelo menos um policial para a operação.'
+            })
+            
+        if lat is None or lng is None:
+            return render(request, 'criar_pevam.html', {
+                'policiais': policiais,
+                'error_message': 'Não foi possível encontrar as coordenadas para o endereço fornecido. Por favor, verifique o endereço e tente novamente.'
+            })
+
+        hospitais = Hospital.objects.all()
+        
+        if not hospitais.exists():
+            return render(request, 'sections/criar_pevam.html', {
+                'policiais': policiais,
+                'error_message': 'Não há hospitais cadastrados no sistema. Por favor, cadastre pelo menos um hospital antes de continuar.'
+            })
+            
+        menor_distancia = None
+        hospital_proximo = None
+        for hospital in hospitais:
+            distancia = calcular_distancia(lat, lng, hospital.latitude, hospital.longitude)
+            if menor_distancia is None or distancia < menor_distancia:
+                menor_distancia = distancia
+                hospital_proximo = hospital
+        
+        maps_link = f'https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route={lat}%2C{lng}%3B{hospital_proximo.latitude}%2C{hospital_proximo.longitude}'
+        
+        qr = qrcode.QRCode(version=1, box_size=10, border=5)
+        qr.add_data(maps_link)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color='black', back_color='white')
+        buffer = io.BytesIO()
+        img.save(buffer, format='PNG')
+        qr_code_image = base64.b64encode(buffer.getvalue()).decode('utf-8')
+
+        return render(request, 'sections/resultado.html', {
+            'qr_code_image': qr_code_image,
+            'hospital': hospital_proximo,
+            'policiais': policiais,
+            'maps_link': maps_link,
+        })
+
+    else:
+        policiais = Policial.objects.all()
+        return render(request, 'sections/criar_pevam.html', {'policiais': policiais, 'selected_policiais': []})
+
+def calcular_distancia(lat1, lng1, lat2, lng2):
+    from math import radians, cos, sin, asin, sqrt
+    # Converter graus para radianos
+    lat1, lng1, lat2, lng2 = map(radians, [lat1, lng1, lat2, lng2])
+
+    # Fórmula de Haversine
+    dlat = lat2 - lat1
+    dlng = lng2 - lng1
+    a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlng / 2) ** 2
+    c = 2 * asin(sqrt(a))
+    km = 6371 * c  # Raio médio da Terra em quilômetros
+    return km
