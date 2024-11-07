@@ -1,8 +1,22 @@
-{% extends 'base/base.html' %}
+{% extends "base/base.html" %}
 
-{% block title %}Página Inicial{% endblock %}
+{% block title %}PEVAM{% endblock %}
 
 {% block content %}
-<h1>Bem-vindo à Página Inicial</h1>
-<p>Conteúdo da página inicial aqui</p>
-{% endblock %}
+<div class="filler"></div>
+<div class="container globalWrapper">
+	<div class="row justify-content-center align-items-center">
+		<div class="col-12 col-sm-10 col-md-8 col-lg-5">
+			<div class="buttonOptionsInitial">
+				<div class="d-grid gap-4 col-6 mx-auto mt-4">
+					<img src="../static/img/pevam_logo.svg" alt="">
+				</div>
+			</div>
+		</div>
+		<div class="col-12 col-md-8 col-lg-7 mchatTitle text-center text-lg-left">
+			<h1 class="mainTitle">BEM VINDO(A)!</h1>
+			<span>GERE DE MANEIRA EFETIVA OS PLANOS DE EVACUAÇÃO DA EQUIPE</span>
+			</span>
+		</div>
+	</div>
+	{% endblock %}
