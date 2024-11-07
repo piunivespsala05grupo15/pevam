@@ -1,0 +1,40 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-danger">Criar <strong>PEVAM</strong></h1>
+    {% if error_message %}
+    <div class="alert alert-danger" role="alert">
+        {{ error_message }}
+    </div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-5 mt-5">
+            <label for="id_endereco" class="form-label"><strong>Endereço</strong></label>
+            <input type="text" id="id_endereco" name="endereco" class="form-control pevamField" placeholder="Digite o endereço da operação" required value="{{ request.POST.endereco }}">
+        </div>
+
+        <div class="mb-5">
+			<label class="form-label"><strong>Policiais Participantes</strong></label>
+			<div>
+				{% for policial in policiais %}
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" name="policiais" value="{{ policial.id }}" id="policial_{{ policial.id }}"
+							{% if policial.id|stringformat:"s" in selected_policiais %}
+								checked
+							{% endif %}>
+						<label class="form-check-label" for="policial_{{ policial.id }}">
+							{{ policial.nome }}
+						</label>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+
+        <button type="submit" class="btn btn-danger">Gerar PEVAM</button>
+    </form>
+</div>
+
+{% endblock %}
