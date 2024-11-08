@@ -157,7 +157,7 @@ def criar_pevam(request):
                 menor_distancia = distancia
                 hospital_proximo = hospital
         
-        maps_link = f'https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route={lat}%2C{lng}%3B{hospital_proximo.latitude}%2C{hospital_proximo.longitude}'
+        maps_link = f'https://www.google.com/maps/dir/?api=1&origin={lat},{lng}&destination={hospital_proximo.latitude},{hospital_proximo.longitude}'
         
         qr = qrcode.QRCode(version=1, box_size=10, border=5)
         qr.add_data(maps_link)
