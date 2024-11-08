@@ -21,9 +21,6 @@ body {
     max-width: 150px;
 }
 
-.globalWrapper {
-    height: 100%;
-}
 
 .filler {
 	height: 25%;
@@ -92,5 +89,11 @@ body {
 @media (max-height: 600px) {
     .fixed-bottom-left, .fixed-bottom-right {
         font-size: 0.9rem;
+    }
+}
+
+@media (max-height: 700px) {
+    .footerToHide {
+        display: none;
     }
 }

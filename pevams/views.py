@@ -13,7 +13,7 @@ import base64
 
 
 def home(request):
-    return render(request, 'sections/home.html')
+    return render(request, 'sections/home.html', {'is_homepage': True})
 
 @csrf_exempt
 def policial(request):
@@ -30,7 +30,7 @@ def policial(request):
         policial.save()
 
         return JsonResponse({'status': 'success', 'policial_id': policial.id})    
-    return render(request, 'sections/policial.html')
+    return render(request, 'sections/policial.html', {'is_homepage': False})
 
 @csrf_exempt
 def contato_emergencia(request):
@@ -82,7 +82,7 @@ def local(request):
 
         return JsonResponse({"success": True, "message": "Endereço salvo com sucesso!"})
     else:
-        return render(request, 'sections/local.html')
+        return render(request, 'sections/local.html', {'is_homepage': False})
     
 from django.http import JsonResponse
 from .models import Hospital
@@ -116,7 +116,7 @@ def hospital(request):
 
         return JsonResponse({"success": True, "message": "Hospital salvo com sucesso!"})
     else:
-        return render(request, 'sections/hospital.html')
+        return render(request, 'sections/hospital.html', {'is_homepage': False})
 
 
 def criar_pevam(request):
@@ -132,13 +132,15 @@ def criar_pevam(request):
             return render(request, 'sections/criar_pevam.html', {
                 'policiais': Policial.objects.all(),
                 'selected_policiais': policiais_ids,
-                'error_message': 'Por favor, selecione pelo menos um policial para a operação.'
+                'error_message': 'Por favor, selecione pelo menos um policial para a operação.',
+                'is_homepage': False,
             })
             
         if lat is None or lng is None:
             return render(request, 'criar_pevam.html', {
                 'policiais': policiais,
-                'error_message': 'Não foi possível encontrar as coordenadas para o endereço fornecido. Por favor, verifique o endereço e tente novamente.'
+                'error_message': 'Não foi possível encontrar as coordenadas para o endereço fornecido. Por favor, verifique o endereço e tente novamente.',
+                'is_homepage': False,
             })
 
         hospitais = Hospital.objects.all()
@@ -146,7 +148,8 @@ def criar_pevam(request):
         if not hospitais.exists():
             return render(request, 'sections/criar_pevam.html', {
                 'policiais': policiais,
-                'error_message': 'Não há hospitais cadastrados no sistema. Por favor, cadastre pelo menos um hospital antes de continuar.'
+                'error_message': 'Não há hospitais cadastrados no sistema. Por favor, cadastre pelo menos um hospital antes de continuar.',
+                'is_homepage': False,
             })
             
         menor_distancia = None
@@ -172,11 +175,12 @@ def criar_pevam(request):
             'hospital': hospital_proximo,
             'policiais': policiais,
             'maps_link': maps_link,
+            'is_homepage': False,
         })
 
     else:
         policiais = Policial.objects.all()
-        return render(request, 'sections/criar_pevam.html', {'policiais': policiais, 'selected_policiais': []})
+        return render(request, 'sections/criar_pevam.html', {'policiais': policiais, 'selected_policiais': [], 'is_homepage': False})
 
 def calcular_distancia(lat1, lng1, lat2, lng2):
     from math import radians, cos, sin, asin, sqrt
