@@ -2,9 +2,7 @@ body {
     margin: 0;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background-color: #b2b4b6;
-    overflow: hidden; /* Prevent any overflow */
 	height: 100vh;
-	width: 100vw;
 }
 
 .fixed-bottom-left, .fixed-bottom-right {
@@ -65,4 +63,34 @@ body {
 
 .navItemBold {
 	font-weight: 500;
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .containerPolicial {
+        padding: 1rem;
+    }
+
+    .mb-3.row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .mb-3.row .col-sm-2,
+    .mb-3.row .col-sm-4 {
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+/* Adjust bottom fixed content for smaller screens */
+@media (max-height: 600px) {
+    .fixed-bottom-left, .fixed-bottom-right {
+        font-size: 0.9rem;
+    }
 }

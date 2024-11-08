@@ -1,78 +1,86 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1>CADASTRAR <strong>POLICIAL</strong></h1>
-    <form id="cadastroPessoaForm">
-        {% csrf_token %}
-        
-        <div class="mb-3 row">
-            <label for="id_numero_registro" class="col-sm-2 col-form-label"><strong>N° REGISTRO</strong></label>
-            <div class="col-sm-4">
-                <input type="text" id="id_numero_registro" name="numero_registro" class="form-control"
-                    placeholder="10.001" required>
-            </div>
-        </div>
-        
-        <div class="mb-3 row">
-            <label for="id_nome" class="col-sm-2 col-form-label"><strong>NOME</strong></label>
-            <div class="col-sm-4">
-                <input type="text" id="id_nome" name="nome" class="form-control" placeholder="João da Silva" required>
-            </div>
-        </div>
-        
-        <div class="mb-3 row">
-            <label for="id_lotacao" class="col-sm-2 col-form-label"><strong>LOTAÇÃO</strong></label>
-            <div class="col-sm-4">
-                <input type="text" id="id_lotacao" name="lotacao" class="form-control"
-                    placeholder="DELEGACIA DE CAMPINAS" required>
-            </div>
-        </div>
-        
-        <div class="mb-3 row">
-            <label for="id_tipo_sanguineo" class="col-sm-2 col-form-label"><strong>TIPO SANGUÍNEO</strong></label>
-            <div class="col-sm-4">
-                <select id="id_tipo_sanguineo" name="tipo_sanguineo" class="form-select" required>
-                    <option value="" disabled selected>Escolha um tipo de sangue</option>
-                    <option value="A+">A+</option>
-                    <option value="A-">A-</option>
-                    <option value="B+">B+</option>
-                    <option value="B-">B-</option>
-                    <option value="AB+">AB+</option>
-                    <option value="AB-">AB-</option>
-                    <option value="O+">O+</option>
-                    <option value="O-">O-</option>
-                </select>
-            </div>
-        </div>
-        
-        <div class="mb-3 row">
-            <label for="id_plano_saude" class="col-sm-2 col-form-label"><strong>PLANO DE SAÚDE</strong></label>
-            <div class="col-sm-4">
-                <input type="text" id="id_plano_saude" name="plano_saude" class="form-control"
-                    placeholder="UNIMED" required>
-            </div>
-        </div>
-
-        <div class="mb-3 row">
-            <label for="id_numero_plasau" class="col-sm-2 col-form-label"><strong>NÚMERO DO PLANO DE SAÚDE</strong></label>
-            <div class="col-sm-4">
-                <input type="text" id="id_numero_plasau" name="numero_plasau" class="form-control"
-                    placeholder="0000000" required>
-            </div>
-        </div>
-        
-        <div class="mb-3 row">
-            <div class="col-sm-4 offset-sm-2 text-end">
-                <button type="submit" class="btn btn-danger">CADASTRAR</button>
-            </div>
-        </div>
-    </form>
-
-    <div id="mensagem" class="mt-3"></div>
+<div class="container mt-5 d-flex flex-column justify-content-center">
+	<div class="d-flex flex-column align-items-center">
+		<h1 class="align-self-start mb-4">CADASTRAR <strong>POLICIAL</strong></h1>
+		<form class="d-flex flex-column align-items-stretch col-12" id="cadastroPessoaForm">
+			{% csrf_token %}
+			
+			<div class="mb-3 row">
+				<label for="id_numero_registro" class="col-sm-2 col-form-label"><strong>N° REGISTRO</strong></label>
+				<div class="col-sm-4">
+					<input type="text" id="id_numero_registro" name="numero_registro" class="form-control"
+						placeholder="10.001" required>
+				</div>
+			</div>
+			
+			<div class="mb-3 row">
+				<label for="id_nome" class="col-sm-2 col-form-label"><strong>NOME</strong></label>
+				<div class="col-sm-4">
+					<input type="text" id="id_nome" name="nome" class="form-control" placeholder="João da Silva" required>
+				</div>
+			</div>
+			
+			<div class="mb-3 row">
+				<label for="id_lotacao" class="col-sm-2 col-form-label"><strong>LOTAÇÃO</strong></label>
+				<div class="col-sm-4">
+					<input type="text" id="id_lotacao" name="lotacao" class="form-control"
+						placeholder="DELEGACIA DE CAMPINAS" required>
+				</div>
+			</div>
+			
+			<div class="mb-3 row">
+				<label for="id_tipo_sanguineo" class="col-sm-2 col-form-label"><strong>TIPO SANGUÍNEO</strong></label>
+				<div class="col-sm-4">
+					<select id="id_tipo_sanguineo" name="tipo_sanguineo" class="form-select" required>
+						<option value="" disabled selected>Escolha um tipo de sangue</option>
+						<option value="A+">A+</option>
+						<option value="A-">A-</option>
+						<option value="B+">B+</option>
+						<option value="B-">B-</option>
+						<option value="AB+">AB+</option>
+						<option value="AB-">AB-</option>
+						<option value="O+">O+</option>
+						<option value="O-">O-</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="mb-3 row">
+				<label for="id_plano_saude" class="col-sm-2 col-form-label"><strong>PLANO DE SAÚDE</strong></label>
+				<div class="col-sm-4">
+					<input type="text" id="id_plano_saude" name="plano_saude" class="form-control"
+						placeholder="UNIMED" required>
+				</div>
+			</div>
+	
+			<div class="mb-3 row">
+				<label for="id_numero_plasau" class="col-sm-2 col-form-label"><strong>NÚMERO DO PLANO DE SAÚDE</strong></label>
+				<div class="col-sm-4">
+					<input type="text" id="id_numero_plasau" name="numero_plasau" class="form-control"
+						placeholder="0000000" required>
+				</div>
+			</div>
+			
+			<div class="mb-3 row">
+				<div class="col-sm-4 offset-sm-2 text-end">
+					<button type="submit" class="btn btn-danger">CADASTRAR</button>
+				</div>
+			</div>
+		</form>
+	</div>
 </div>
 
 <script>
+	document.getElementById('id_numero_registro').addEventListener('input', function (e) {
+        e.target.value = e.target.value.replace(/[^0-9.-]/g, ''); // Permitir apenas números, ponto e hífen
+    });
+
+    document.getElementById('id_numero_plasau').addEventListener('input', function (e) {
+        e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
+    });
+
     document.getElementById('cadastroPessoaForm').addEventListener('submit', function(e) {
         e.preventDefault();
         console.log("Formulário enviado");
@@ -93,7 +101,8 @@
                     icon: 'success',
                     title: 'Sucesso!',
                     text: 'Pessoa cadastrada com sucesso!',
-                    confirmButtonText: 'Ok'
+                    confirmButtonText: 'Ok',
+					confirmButtonColor: '#dc3545',
                 }).then(() => {
                     cadastrarContatoEmergencia(data.policial_id);
                 });
@@ -118,13 +127,15 @@
     });
 
     function cadastrarContatoEmergencia(policialId) {
+    function showContactForm() {
         Swal.fire({
             title: 'Cadastrar Contato de Emergência',
             html: `
                 <input type="text" id="nome_contato" class="swal2-input" placeholder="Nome do Contato">
-                <input type="text" id="celular_contato" class="swal2-input" placeholder="Celuluar do Contato">
-                <input type="text" id="email_contato" class="swal2-input" placeholder="email do Contato">
+                <input type="text" id="celular_contato" class="swal2-input" placeholder="Celular do Contato">
+                <input type="text" id="email_contato" class="swal2-input" placeholder="Email do Contato">
             `,
+			confirmButtonColor: '#dc3545',
             focusConfirm: false,
             preConfirm: () => {
                 const nomeContato = document.getElementById('nome_contato').value;
@@ -157,7 +168,22 @@
                     icon: 'success',
                     title: 'Sucesso!',
                     text: 'Contato de emergência cadastrado com sucesso!',
-                    confirmButtonText: 'Ok'
+                    confirmButtonText: 'Adicionar Outro Contato',
+					confirmButtonColor: '#dc3545',
+                    showCancelButton: true,
+                    cancelButtonText: 'Finalizar'
+                }).then((nextAction) => {
+                    if (nextAction.isConfirmed) {
+                        showContactForm();
+                    } else {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Finalizado',
+                            text: 'Cadastro de contatos de emergência finalizado.',
+                            confirmButtonText: 'Ok',
+							confirmButtonColor: '#dc3545',
+                        });
+                    }
                 });
             }
         }).catch((error) => {
@@ -169,5 +195,8 @@
             });
         });
     }
+
+    showContactForm();
+}
 </script>
 {% endblock %}
