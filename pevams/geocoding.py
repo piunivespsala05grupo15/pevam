@@ -20,6 +20,8 @@ def get_geocode(address):
         return None, None
 
     data = response.json()
+    
+    print(data)
 
     if data:
         location = data[0]

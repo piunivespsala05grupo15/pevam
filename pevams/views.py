@@ -137,7 +137,7 @@ def criar_pevam(request):
             })
             
         if lat is None or lng is None:
-            return render(request, 'criar_pevam.html', {
+            return render(request, 'sections/criar_pevam.html', {
                 'policiais': policiais,
                 'error_message': 'Não foi possível encontrar as coordenadas para o endereço fornecido. Por favor, verifique o endereço e tente novamente.',
                 'is_homepage': False,
