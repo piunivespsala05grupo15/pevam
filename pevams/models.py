@@ -46,6 +46,10 @@ class Local(models.Model):
         return self.logradouro
     
 class Hospital(models.Model):
+    TIPO_ENTRADA_CHOICES = [
+        ('porta aberta', 'porta aberta'),
+        ('necessita regulação', 'necessita regulação'),
+    ]
     nome = models.CharField(max_length=100)
     logradouro = models.CharField(max_length=100)
     numero = models.CharField(max_length=5)
@@ -56,6 +60,7 @@ class Hospital(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     telefone = models.CharField(max_length=10)
+    forma_entrada = models.CharField(max_length=50, choices=TIPO_ENTRADA_CHOICES)
 
     def __str__(self):
         return self.nome

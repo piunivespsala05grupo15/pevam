@@ -1,6 +1,6 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
-    <a class="navbar-brand" href="{% url 'home' %}">
+    <a class="navbar-brand zoomable" href="{% url 'home' %}">
         {% load static %}<img class="img-logo"  src="{% static 'images/red_cross.png' %}" width="30" height="30"
             class="d-inline-block align-top" alt="cruz vermelha">
     </a>
@@ -14,20 +14,32 @@
     <!-- Conteúdo do menu que colapsa em telas menores -->
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
-
             <li class="nav-item">
-                <a class="nav-link navItemBold" href="{% url 'criar_pevam' %}">GERAR PEVAM</a>
+                <a class="nav-link navItemBold zoomable" href="{% url 'criar_pevam' %}">GERAR PEVAM</a>
             </li>
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle navItemBold" href="#" id="navbarDropdownMenuLink" 
+                <a class="nav-link dropdown-toggle navItemBold zoomable" href="#" id="navbarDropdownMenuLink" 
                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     CADASTRAR
                 </a>
-                <ul class="dropdown-menu bg-danger" aria-labelledby="navbarDropdownMenuLink">
-                    <li><a class="dropdown-item navItemBold" href="{% url 'policial' %}">POLICIAL</a></li>
-                    <li><a class="dropdown-item navItemBold" href="{% url 'local' %}">LOCAL</a></li>
-                    <li><a class="dropdown-item navItemBold" href="{% url 'hospital' %}">HOSPITAL</a></li>
+                <ul class="dropdown-menu bg-danger zoomable" aria-labelledby="navbarDropdownMenuLink">
+                    <li><a class="dropdown-item navItemBold zoomable" href="{% url 'policial' %}">POLICIAL</a></li>
+                    <li><a class="dropdown-item navItemBold zoomable" href="{% url 'hospital' %}">HOSPITAL</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle navItemBold zoomable" href="#" id="navbarDropdownMenuLink" 
+                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    ACESSIBILIDADE
+                </a>
+                <ul class="dropdown-menu bg-danger zoomable" aria-labelledby="navbarDropdownMenuLinks">
+                    <li class="dropdown-item navItemBold zoomable">
+                        <button id="toggleZoom" class="btn btn-danger"><i class="bi bi-zoom-in"></i></button>
+                    </li>
+                    <li class="nav-item" class="dropdown-item navItemBold zoomable">
+                        <button id="toggleContrast" class="btn btn-outline-light nav-link">Alto Contraste</button>
+                    </li>
                 </ul>
             </li>
         </ul>

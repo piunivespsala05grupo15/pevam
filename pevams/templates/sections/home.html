@@ -5,16 +5,18 @@
 {% load static %}
 
 {% block content %}
-<div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
-    <div class="row text-center text-lg-left justify-content-center align-items-center">
+<div class="container-fluid" style="height: calc(100vh - 60px);"> <!-- Ajuste a altura do navbar, geralmente 56px para Bootstrap padrão -->
+    <div class="d-flex align-items-center justify-content-center h-100">
+        <div class="row text-center text-lg-left justify-content-center align-items-center">
 		
-        <div class="col-12 col-md-6 mb-3">
-            <img src="{% static 'img/pevam_logo.svg' %}" alt="Logo PEVAM" class="img-fluid" style="max-width: 200px; height: auto;">
-        </div>
+            <div class="col-12 col-md-6 mb-3">
+                <img src="{% static 'img/pevam_logo.svg' %}" alt="Logo PEVAM" class="img-fluid zoomable" style="max-width: 200px; height: auto;">
+            </div>
 
-        <div class="col-12 col-md-6">
-            <h1 class="mainTitle">BEM VINDO(A)!</h1>
-            <p>GERE DE MANEIRA EFETIVA OS PLANOS DE EVACUAÇÃO DA EQUIPE</p>
+            <div class="col-12 col-md-6">
+                <h1 class="mainTitle zoomable">BEM VINDO(A)!</h1>
+                <p class="zoomable">GERE DE MANEIRA EFETIVA OS PLANOS DE EVACUAÇÃO DA EQUIPE</p>
+            </div>
         </div>
     </div>
 </div>

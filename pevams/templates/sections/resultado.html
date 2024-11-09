@@ -1,12 +1,8 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-<div class="container mt-5 text-center">
-    <h1>PEVAM Gerado com Sucesso!</h1>
-    <p>Hospital Mais Próximo: <strong>{{ hospital.nome }}</strong></p>
-    <p>Endereço: {{ hospital.endereco }}</p>
-    <img src="data:image/png;base64,{{ qr_code_image }}" alt="QR Code">
-    <p>Escaneie o QR Code ou <a href="{{ maps_link }}" target="_blank">clique aqui</a> para obter a rota no OpenStreetMap.</p>
+<div class="d-flex flex-column align-items-center justify-content-center mt-5 text-center alturaMaior">
+    <h1 class="zoomable">PEVAM Gerado com Sucesso!</h1>
+    <a href="data:application/pdf;base64,{{ pdf_base64 }}" download="PEVAM_Report.pdf" class="btn btn-danger mt-4 zoomable">Download PDF</a>
 </div>
-
 {% endblock %}

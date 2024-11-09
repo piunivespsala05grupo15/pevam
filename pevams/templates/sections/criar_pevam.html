@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="text-danger">Criar <strong>PEVAM</strong></h1>
+    <h1 class="text-danger zoomable">Criar <strong>PEVAM</strong></h1>
     {% if error_message %}
     <div class="alert alert-danger" role="alert">
         {{ error_message }}
@@ -12,29 +12,111 @@
         {% csrf_token %}
 
         <div class="mb-5 mt-5">
-            <label for="id_endereco" class="form-label"><strong>Endereço</strong></label>
-            <input type="text" id="id_endereco" name="endereco" class="form-control pevamField" placeholder="Digite o endereço da operação" required value="{{ request.POST.endereco }}">
+            <label for="id_endereco" class="form-label zoomable"><strong>Endereço</strong></label>
+            <input type="text" id="id_endereco" name="endereco" class="form-control pevamField zoomable" placeholder="Digite o endereço da operação" required value="{{ request.POST.endereco }}">
         </div>
 
         <div class="mb-5">
-			<label class="form-label"><strong>Policiais Participantes</strong></label>
-			<div>
-				{% for policial in policiais %}
-					<div class="form-check">
-						<input class="form-check-input" type="checkbox" name="policiais" value="{{ policial.id }}" id="policial_{{ policial.id }}"
-							{% if policial.id|stringformat:"s" in selected_policiais %}
-								checked
-							{% endif %}>
-						<label class="form-check-label" for="policial_{{ policial.id }}">
-							{{ policial.nome }}
-						</label>
-					</div>
-				{% endfor %}
-			</div>
-		</div>
+            <label class="form-label zoomable"><strong>Policiais Participantes</strong></label>
+            <!-- Campo de busca -->
+            <input type="text" id="policialSearch" class="form-control mb-3 zoomable" placeholder="Buscar policial por nome...">
+            <!-- Lista de resultados da busca com rolagem para todos os policiais -->
+            <div id="policialResults" class="list-group zoomable" style="max-height: 200px; overflow-y: auto;"></div>
+
+            <!-- Lista de policiais selecionados com rolagem -->
+            <div class="mt-3">
+                <h5 class="zoomable">Policiais Selecionados:</h5>
+                <ul id="selectedPoliciais" class="list-group zoomable" style="max-height: 200px; overflow-y: auto;">
+                    {% for policial in policiais %}
+                        {% if policial.id|stringformat:"s" in selected_policiais %}
+                        <li class="list-group-item" data-id="{{ policial.id }}">
+                            {{ policial.nome }}
+                            <button type="button" class="btn btn-sm btn-danger float-end remove-policial zoomable">Remover</button>
+                            <input type="hidden" name="policiais" value="{{ policial.id }}">
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
 
         <button type="submit" class="btn btn-danger">Gerar PEVAM</button>
     </form>
 </div>
 
+<script>
+    // Lista de policiais (exemplo de dados em JavaScript)
+    const policiais = [
+        {% for policial in policiais %}
+            { id: {{ policial.id }}, nome: "{{ policial.nome }}" },
+        {% endfor %}
+    ];
+
+    const searchField = document.getElementById("policialSearch");
+    const resultsContainer = document.getElementById("policialResults");
+
+    // Função para exibir a lista completa de policiais ou aplicar filtro de busca
+    function searchPolicial() {
+        const searchValue = searchField.value.toLowerCase();
+        resultsContainer.innerHTML = "";
+
+        const filteredPoliciais = searchValue.trim() === ""
+            ? policiais // Exibe todos os policiais se não houver busca
+            : policiais.filter(policial => policial.nome.toLowerCase().includes(searchValue));
+
+        filteredPoliciais.forEach(policial => {
+            const listItem = document.createElement("button");
+            listItem.classList.add("list-group-item", "list-group-item-action");
+            listItem.textContent = policial.nome;
+            listItem.setAttribute("data-id", policial.id);
+
+            // Impede a seleção de policiais já adicionados
+            if (document.querySelector(`#selectedPoliciais li[data-id="${policial.id}"]`)) {
+                return;
+            }
+
+            listItem.addEventListener("click", () => addPolicial(policial)); // Ação para adicionar policial
+            resultsContainer.appendChild(listItem);
+        });
+    }
+
+    // Função para adicionar policial à lista de selecionados
+    function addPolicial(policial) {
+        const selectedList = document.getElementById("selectedPoliciais");
+
+        // Verificar se o policial já foi adicionado
+        if (document.querySelector(`#selectedPoliciais li[data-id="${policial.id}"]`)) {
+            return; // Evitar duplicação
+        }
+
+        const listItem = document.createElement("li");
+        listItem.classList.add("list-group-item");
+        listItem.setAttribute("data-id", policial.id);
+        listItem.innerHTML = `${policial.nome} 
+            <button type="button" class="btn btn-sm btn-danger float-end remove-policial">Remover</button>
+            <input type="hidden" name="policiais" value="${policial.id}">`;
+
+        // Adicionar o evento para remover o policial
+        listItem.querySelector(".remove-policial").addEventListener("click", () => {
+            listItem.remove();
+            searchPolicial();  // Recarregar a lista de participantes ao remover um policial
+        });
+
+        selectedList.appendChild(listItem);
+        resultsContainer.innerHTML = "";  // Limpa os resultados após adicionar
+        searchField.value = "";  // Limpa o campo de busca
+
+        // Remover o policial da lista de resultados
+        const resultItem = document.querySelector(`#policialResults button[data-id="${policial.id}"]`);
+        if (resultItem) {
+            resultItem.remove();
+        }
+    }
+
+    // Evento de entrada para busca
+    searchField.addEventListener("input", searchPolicial);
+
+    // Evento de foco para exibir os policiais quando o campo de busca for selecionado
+    searchField.addEventListener("focus", searchPolicial);
+</script>
 {% endblock %}

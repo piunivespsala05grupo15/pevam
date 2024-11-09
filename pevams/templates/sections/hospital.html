@@ -1,91 +1,102 @@
-
 {% extends 'base/base.html' %}
 
 {% block content %}
-<div class="container mt-5 d-flex flex-column justify-content-center mb-5">
-    <h1 class="mb-4">CADASTRAR <strong>HOSPITAL</strong></h1>
-    <form id="cadastroHospitalForm">
-        {% csrf_token %}
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;"> <!-- Centraliza na vertical e horizontalmente -->
+    <div class="w-100" style="max-width: 600px;">
+        <h1 class="mb-4 text-center zoomable">CADASTRAR <strong>HOSPITAL</strong></h1>
+        <form id="cadastroHospitalForm">
+            {% csrf_token %}
 
-        <div class="mb-3 row">
-            <label for="nome" class="col-sm-2 col-form-label"><strong>NOME</strong></label>
-            <div class="col-sm-4">
-                <input type="text" id="nome" name="nome" class="form-control" placeholder="Nome do Hospital" required>
+            <div class="mb-3 row">
+                <label for="nome" class="col-md-3 col-form-label zoomable"><strong>NOME</strong></label>
+                <div class="col-md-9">
+                    <input type="text" id="nome" name="nome" class="form-control zoomable" placeholder="Nome do Hospital" required>
+                </div>
             </div>
-        </div>
 
-        <div class="mb-3 row">
-            <label for="cep" class="col-sm-2 col-form-label"><strong>CEP</strong></label>
-            <div class="col-sm-4">
-                <input type="text" id="cep" name="cep" class="form-control" placeholder="Digite o CEP" maxlength="8" required>
+            <div class="mb-3 row">
+                <label for="cep" class="col-md-3 col-form-label zoomable"><strong>CEP</strong></label>
+                <div class="col-md-9">
+                    <input type="text" id="cep" name="cep" class="form-control zoomable" placeholder="Digite o CEP" maxlength="8" required>
+                </div>
             </div>
-        </div>
 
-        <div class="mb-3 row">
-            <label for="logradouro" class="col-sm-2 col-form-label"><strong>LOGRADOURO</strong></label>
-            <div class="col-sm-4">
-                <input type="text" id="logradouro" name="logradouro" class="form-control" placeholder="Logradouro" readonly required>
+            <div class="mb-3 row">
+                <label for="logradouro" class="col-md-3 col-form-label zoomable"><strong>LOGRADOURO</strong></label>
+                <div class="col-md-9">
+                    <input type="text" id="logradouro" name="logradouro" class="form-control zoomable" placeholder="Logradouro" readonly required>
+                </div>
             </div>
-        </div>
 
-        <div class="mb-3 row">
-            <label for="numero" class="col-sm-2 col-form-label"><strong>NÚMERO</strong></label>
-            <div class="col-sm-4">
-                <input type="text" id="numero" name="numero" class="form-control" placeholder="Número" required>
+            <div class="mb-3 row">
+                <label for="numero" class="col-md-3 col-form-label zoomable"><strong>NÚMERO</strong></label>
+                <div class="col-md-9">
+                    <input type="text" id="numero" name="numero" class="form-control zoomable" placeholder="Número" required>
+                </div>
             </div>
-        </div>
 
-        <div class="mb-3 row">
-            <label for="complemento" class="col-sm-2 col-form-label"><strong>COMPLEMENTO</strong></label>
-            <div class="col-sm-4">
-                <input type="text" id="complemento" name="complemento" class="form-control" placeholder="Complemento">
+            <div class="mb-3 row">
+                <label for="complemento" class="col-md-3 col-form-label zoomable"><strong>COMPLEMENTO</strong></label>
+                <div class="col-md-9">
+                    <input type="text" id="complemento" name="complemento" class="form-control zoomable" placeholder="Complemento">
+                </div>
             </div>
-        </div>
 
-        <div class="mb-3 row">
-            <label for="bairro" class="col-sm-2 col-form-label"><strong>BAIRRO</strong></label>
-            <div class="col-sm-4">
-                <input type="text" id="bairro" name="bairro" class="form-control" placeholder="Bairro" readonly required>
+            <div class="mb-3 row">
+                <label for="bairro" class="col-md-3 col-form-label zoomable"><strong>BAIRRO</strong></label>
+                <div class="col-md-9">
+                    <input type="text" id="bairro" name="bairro" class="form-control zoomable" placeholder="Bairro" readonly required>
+                </div>
             </div>
-        </div>
 
-        <div class="mb-3 row">
-            <label for="cidade" class="col-sm-2 col-form-label"><strong>CIDADE</strong></label>
-            <div class="col-sm-4">
-                <input type="text" id="cidade" name="cidade" class="form-control" placeholder="Cidade" readonly required>
+            <div class="mb-3 row">
+                <label for="cidade" class="col-md-3 col-form-label zoomable"><strong>CIDADE</strong></label>
+                <div class="col-md-9">
+                    <input type="text" id="cidade" name="cidade" class="form-control zoomable" placeholder="Cidade" readonly required>
+                </div>
             </div>
-        </div>
 
-        <div class="mb-3 row">
-            <label for="latitude" class="col-sm-2 col-form-label"><strong>LATITUDE</strong></label>
-            <div class="col-sm-4">
-                <input type="text" id="latitude" name="latitude" class="form-control" placeholder="Latitude" required>
+            <div class="mb-3 row">
+                <label for="latitude" class="col-md-3 col-form-label zoomable"><strong>LATITUDE</strong></label>
+                <div class="col-md-9">
+                    <input type="text" id="latitude" name="latitude" class="form-control zoomable" placeholder="Latitude" required>
+                </div>
             </div>
-        </div>
 
-        <div class="mb-3 row">
-            <label for="longitude" class="col-sm-2 col-form-label"><strong>LONGITUDE</strong></label>
-            <div class="col-sm-4">
-                <input type="text" id="longitude" name="longitude" class="form-control" placeholder="Longitude" required>
+            <div class="mb-3 row">
+                <label for="longitude" class="col-md-3 col-form-label zoomable"><strong>LONGITUDE</strong></label>
+                <div class="col-md-9">
+                    <input type="text" id="longitude" name="longitude" class="form-control zoomable" placeholder="Longitude" required>
+                </div>
             </div>
-        </div>
 
-        <div class="mb-3 row">
-            <label for="telefone" class="col-sm-2 col-form-label"><strong>TELEFONE</strong></label>
-            <div class="col-sm-4">
-                <input type="text" id="telefone" name="telefone" class="form-control" placeholder="Telefone" maxlength="10" required>
+            <div class="mb-3 row">
+                <label for="telefone" class="col-md-3 col-form-label zoomable"><strong>TELEFONE</strong></label>
+                <div class="col-md-9">
+                    <input type="text" id="telefone" name="telefone" class="form-control zoomable" placeholder="Telefone" maxlength="10" required>
+                </div>
             </div>
-        </div>
-
-        <div class="mb-3 row">
-            <div class="col-sm-4 offset-lg-2 text-end">
-                <button type="submit" class="btn btn-danger">SALVAR HOSPITAL</button>
+            <div class="mb-3 row">
+                <label for="forma-de-entrada" class="col-md-3 col-form-label zoomable"><strong>ENTRADA</strong></label>
+                <div class="col-md-9">
+                    <select id="id-forma-de-entrada" name="forma-de-entrada" class="form-select zoomable" required>
+                        <option value="" disabled selected>Reserva de vaga</option>
+                        <option value="porta aberta">Porta Aberta</option>
+                        <option value="necessita regulação">Necessita Regulação</option>
+                    </select>
+                </div>
             </div>
-        </div>
-    </form>
 
-    <!-- Mensagem de sucesso/erro -->
-    <div id="mensagem" class="mt-3"></div>
+            <div class="mb-3 row">
+                <div class="col-12 text-center"> <!-- Centraliza o botão -->
+                    <button type="submit" class="btn btn-danger offset-lg-9 zoomable">SALVAR HOSPITAL</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Mensagem de sucesso/erro -->
+        <div id="mensagem" class="mt-3"></div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

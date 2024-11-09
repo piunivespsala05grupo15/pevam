@@ -21,8 +21,6 @@ def get_geocode(address):
 
     data = response.json()
     
-    print(data)
-
     if data:
         location = data[0]
         lat = float(location['lat'])
