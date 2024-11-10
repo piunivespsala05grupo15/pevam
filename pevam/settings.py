@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-pmm514#yz#8h-o!vtlvc($z^$8hlyr%(u#%frvmxhl)a4b*e#i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'pevam.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'c',
-        'USER': 'root',
+        'NAME': 'pevam$pevam_projeto_univesp',
+        'USER': 'pevam',
         'PASSWORD': 'pevamprojeto',
-        'HOST': '127.0.0.1',  # ou o IP do servidor MySQL se estiver rodando remotamente
+        'HOST': 'pevam.mysql.pythonanywhere-services.com',  # ou o IP do servidor MySQL se estiver rodando remotamente
         'PORT': '3306',  # Porta padrão do MySQL
     }
 }
@@ -121,7 +121,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATIC_URL = '/static/'
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
