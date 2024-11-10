@@ -78,10 +78,17 @@ WSGI_APPLICATION = 'pevam.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+<<<<<<< Updated upstream
         'NAME': 'pevam$pevam_projeto_univesp',
         'USER': 'pevam',
         'PASSWORD': 'pevamprojeto',
         'HOST': 'pevam.mysql.pythonanywhere-services.com',  # ou o IP do servidor MySQL se estiver rodando remotamente
+=======
+        'NAME': 'c',
+        'USER': 'root',
+        'PASSWORD': 'pevamprojeto',
+        'HOST': '127.0.0.1',  # ou o IP do servidor MySQL se estiver rodando remotamente
+>>>>>>> Stashed changes
         'PORT': '3306',  # Porta padrão do MySQL
     }
 }
