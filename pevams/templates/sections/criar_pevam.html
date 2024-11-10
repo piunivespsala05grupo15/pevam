@@ -11,7 +11,7 @@
     <form method="post">
         {% csrf_token %}
 
-        <div class="mb-5 mt-5">
+        <div class="mb-5 mt-5 largerField">
             <label for="id_endereco" class="form-label zoomable"><strong>Endereço</strong></label>
             <input type="text" id="id_endereco" name="endereco" class="form-control pevamField zoomable" placeholder="Digite o endereço da operação" required value="{{ request.POST.endereco }}">
         </div>

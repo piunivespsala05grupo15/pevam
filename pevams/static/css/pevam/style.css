@@ -212,3 +212,29 @@ body {
     border: none; /* Sem borda */
 }
 
+.largerField {
+	width: 113vw;
+}
+
+/* Estilo padrão */
+
+/* Breakpoint para telas pequenas */
+@media (max-width: 576px) {
+    
+	.centralElements{
+		margin-top: -10vh;
+	}
+
+    .fixed-bottom-right {
+        opacity: 0.1;
+        text-align: center;
+    }
+
+    /* Reposicionamento opcional */
+    .fixed-bottom-right {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+}
