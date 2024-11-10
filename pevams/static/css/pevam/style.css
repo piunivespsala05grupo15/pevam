@@ -111,22 +111,7 @@ body {
     transition: transform 0.3s ease-in-out;
   }
   
-  #toggleZoom {
-    background-color: #f45b46;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
 
-#toggleZoom:hover {
-    background-color: #950b0b;
-}
-
-/* Active state styling when zoom mode is enabled */
-#toggleZoom.active {
-    background-color: #650808; /* Darker shade for active state */
-}
 
 .alturaMaior {
     height: 75vh;
@@ -139,13 +124,14 @@ body {
     }
 }
 
-/* CSS para o modo de alto contraste */
+/* Estilo de alto contraste */
 .high-contrast {
     background-color: #000000; /* Fundo preto */
     color: #FFFFFF; /* Texto branco */
 }
 
-.high-contrast .navbar, .high-contrast .dropdown-menu {
+.high-contrast .navbar, 
+.high-contrast .dropdown-menu {
     background-color: #222222; /* Fundo mais escuro para a navbar e dropdown */
 }
 
@@ -154,10 +140,50 @@ body {
     border-color: #FFFFFF;
 }
 
-.high-contrast .form-control {
+.high-contrast .form-control,
+.high-contrast .form-select {
     background-color: #333333;
     color: #FFFFFF;
     border-color: #FFFFFF;
+}
+
+.high-contrast .btn-danger {
+    background-color: red;
+    border-color: white;
+}
+
+.high-contrast .btn-outline-danger {
+    color: red;
+    border-color: red;
+}
+
+.high-contrast .form-check-input {
+    background-color: #333333;
+    border-color: #FFFFFF;
+}
+
+.high-contrast:focus,
+.high-contrast .form-control:focus,
+.high-contrast .form-select:focus {
+    background-color: #333333; /* Fundo escuro */
+    color:#BBBBBB;
+}
+
+/* A seta do dropdown em modo de alto contraste */
+.high-contrast .form-select {
+    -webkit-appearance: none; /* Remove o estilo padrão da seta */
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white"%3E%3Cpath d="M10 14l5-5H5l5 5z"/%3E%3C/svg%3E'); /* Seta branca personalizada */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px; /* Espaço para a seta */
+}
+
+
+/* Mudar a cor do texto do placeholder no modo de alto contraste */
+.high-contrast .form-control::placeholder {
+    color: #BBBBBB; /* Cor mais suave para o placeholder no alto contraste */
 }
 
 .high-contrast .nav-link, .high-contrast .dropdown-item {
