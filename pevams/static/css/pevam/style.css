@@ -6,10 +6,11 @@ body {
     background-color: #b2b4b6;
     height: 100vh;
     width: 100vw;
-	height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal overflow */
+    padding-top: 56px; /* Add padding to avoid overlap with navbar */
 }
 
-.img-logo{
+.img-logo {
     margin-left: 0.35rem;
 }
 
@@ -28,7 +29,6 @@ body {
     right: 1rem;
     max-width: 150px;
 }
-
 
 .filler {
     height: 25%;
@@ -70,7 +70,63 @@ body {
     font-weight: 500;
 }
 
+/* Navbar styling */
+.navbar {
+    position: fixed; /* Make navbar fixed */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    height: 56px; /* Set a fixed height for the navbar */
+}
 
+.navbar-nav .nav-item .dropdown-menu {
+    background-color: #ff4c4c;
+    position: absolute;
+    width: auto; /* Ensure dropdown width is only as wide as needed */
+    min-width: 150px;
+    z-index: 1002;
+}
+
+@media (max-width: 768px) {
+    /* Adjust padding for mobile to prevent overlapping */
+    body {
+        padding-top: 70px; /* Extra space for mobile navbar */
+    }
+
+    /* Make the navbar overlay less obtrusive */
+    .navbar {
+        padding: 0.5rem;
+        height: auto;
+    }
+
+    .navbar-collapse {
+        position: absolute;
+        top: 56px; /* Align with navbar */
+        width: 100%;
+        background-color: #ff4c4c;
+        display: none; /* Initially hidden */
+        z-index: 1000;
+        height: auto;
+    }
+
+    /* Show the dropdown overlay when toggled */
+    .navbar-collapse.show {
+        display: block;
+    }
+
+    /* Reduce padding for each item in mobile navbar */
+    .navbar-nav .nav-item {
+        padding: 0.25rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    /* Adjust logo size */
+    .navbar-brand img {
+        width: 25px;
+        height: 25px;
+    }
+}
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -109,9 +165,7 @@ body {
 .zoom-text {
     transform: scale(1.5);
     transition: transform 0.3s ease-in-out;
-  }
-  
-
+}
 
 .alturaMaior {
     height: 75vh;
@@ -124,15 +178,15 @@ body {
     }
 }
 
-/* Estilo de alto contraste */
+/* High-contrast styling */
 .high-contrast {
-    background-color: #000000; /* Fundo preto */
-    color: #FFFFFF; /* Texto branco */
+    background-color: #000000;
+    color: #FFFFFF;
 }
 
 .high-contrast .navbar, 
 .high-contrast .dropdown-menu {
-    background-color: #222222; /* Fundo mais escuro para a navbar e dropdown */
+    background-color: #222222;
 }
 
 .high-contrast .btn-outline-light {
@@ -165,72 +219,66 @@ body {
 .high-contrast:focus,
 .high-contrast .form-control:focus,
 .high-contrast .form-select:focus {
-    background-color: #333333; /* Fundo escuro */
+    background-color: #333333;
     color:#BBBBBB;
 }
 
-/* A seta do dropdown em modo de alto contraste */
 .high-contrast .form-select {
-    -webkit-appearance: none; /* Remove o estilo padrão da seta */
+    -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white"%3E%3Cpath d="M10 14l5-5H5l5 5z"/%3E%3C/svg%3E'); /* Seta branca personalizada */
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white"%3E%3Cpath d="M10 14l5-5H5l5 5z"/%3E%3C/svg%3E');
     background-repeat: no-repeat;
     background-position: right 10px center;
-    padding-right: 30px; /* Espaço para a seta */
+    padding-right: 30px;
 }
 
-
-/* Mudar a cor do texto do placeholder no modo de alto contraste */
 .high-contrast .form-control::placeholder {
-    color: #BBBBBB; /* Cor mais suave para o placeholder no alto contraste */
+    color: #BBBBBB;
 }
 
 .high-contrast .nav-link, .high-contrast .dropdown-item {
     color: #FFFFFF;
 }
 
-/* Remover efeito de hover de todos os itens na Navbar */
 .navbar .nav-link,
 .navbar .dropdown-item {
-    color: #FFFFFF; /* Cor fixa do texto */
-    background-color: transparent; /* Sem fundo */
+    color: #FFFFFF;
+    background-color: transparent;
 }
 
-/* Remover o efeito de hover */
 .navbar .nav-link:hover,
 .navbar .dropdown-item:hover {
-    color: #FFFFFF; /* Manter o texto branco ao passar o mouse */
-    background-color: transparent; /* Manter fundo transparente ao passar o mouse */
-    cursor: pointer; /* Cursor no estilo pointer */
+    color: #FFFFFF;
+    background-color: transparent;
+    cursor: pointer;
 }
 
-/* Para ícones de botões dentro da Navbar (opcional) */
 .navbar .btn:hover {
-    color: #FFFFFF; /* Manter o texto branco no hover */
-    background-color: transparent; /* Fundo transparente */
-    border: none; /* Sem borda */
+    color: #FFFFFF;
+    background-color: transparent;
+    border: none;
 }
 
+/* Remove the large width that was causing overflow */
 .largerField {
-	width: 113vw;
+    width: 100%; /* Fit within viewport */
 }
 
-/* Estilo padrão */
+/* Default style */
 
-/* Breakpoint para telas pequenas */
+/* Breakpoint for small screens */
 @media (max-width: 576px) {
-    
-	.centralElements{
-		margin-top: -10vh;
-	}
+    .centralElements {
+        margin-top: -10vh;
+    }
 
     .fixed-bottom-right {
         opacity: 0.0;
         text-align: center;
     }
 
-    /* Reposicionamento opcional */
+    /* Optional repositioning */
     .fixed-bottom-right {
         position: absolute;
         display: flex;
