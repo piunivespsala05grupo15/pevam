@@ -133,7 +133,7 @@ def edit_policial(request, pk):
         if form.is_valid() and formset.is_valid():
             form.save()
             formset.save()
-            return JsonResponse({'status': 'success', 'message': 'Policial and contacts updated successfully!'})
+            return redirect('list_policial')  # Redirect to the list of policiais or a success page
     else:
         form = PolicialForm(instance=policial)
         formset = ContatoEmergenciaFormSet(instance=policial)
@@ -143,7 +143,7 @@ def delete_policial(request, pk):
     policial = get_object_or_404(Policial, pk=pk)
     if request.method == 'POST':
         policial.delete()
-        return JsonResponse({'status': 'success', 'message': 'Policial deleted successfully!'})
+        return redirect('list_policial')
     return render(request, 'sections/delete_confirm.html', {'object': policial, 'type': 'Policial'})
 
 def edit_hospital(request, pk):
@@ -152,7 +152,7 @@ def edit_hospital(request, pk):
         form = HospitalForm(request.POST, instance=hospital)
         if form.is_valid():
             form.save()
-            return JsonResponse({'status': 'success', 'message': 'Hospital updated successfully!'})
+            return redirect('list_hospital')
     else:
         form = HospitalForm(instance=hospital)
     return render(request, 'sections/edit_hospital.html', {'form': form, 'hospital': hospital})
@@ -161,7 +161,7 @@ def delete_hospital(request, pk):
     hospital = get_object_or_404(Hospital, pk=pk)
     if request.method == 'POST':
         hospital.delete()
-        return JsonResponse({'status': 'success', 'message': 'Hospital deleted successfully!'})
+        return redirect('list_hospital')
     return render(request, 'sections/delete_confirm.html', {'object': hospital, 'type': 'Hospital'})
 
 
