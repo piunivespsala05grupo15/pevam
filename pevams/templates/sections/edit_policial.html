@@ -1,0 +1,97 @@
+{% extends 'base/base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="container mt-5 pb-5" style="padding-bottom: 100px;"> <!-- Extra padding to prevent footer overlap -->
+    <h1 class="text-center mb-4">Edit Policial</h1>
+    <form method="post" id="editPolicialForm">
+        {% csrf_token %}
+        
+        <!-- Main Policial Form Fields -->
+        {{ form.as_p }}
+        
+        <h3 class="mt-4">Contatos de Emergência</h3>
+        <div id="emergencyContacts">
+            {{ formset.management_form }}
+            {% for form in formset %}
+                <div class="emergency-contact mb-3" style="padding-top: 10px;">
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label"><strong>Nome do Contato</strong></label>
+                        <div class="col-sm-8">
+                            {{ form.nome_contato|add_class:"form-control" }}
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label"><strong>Celular do Contato</strong></label>
+                        <div class="col-sm-8">
+                            {{ form.celular_contato|add_class:"form-control" }}
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label"><strong>Email do Contato</strong></label>
+                        <div class="col-sm-8">
+                            {{ form.email_contato|add_class:"form-control" }}
+                        </div>
+                    </div>
+                    {% if form.instance.pk %}
+                        <div class="text-end mt-2">
+                            <button type="button" class="remove-contact btn btn-danger btn-sm">Remove</button>
+                        </div>
+                    {% endif %}
+                    <hr class="mt-3"> <!-- Line separator for each contact -->
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Add Another Contact Button, Closer to Contacts Section -->
+        <div class="text-start">
+            <button id="addContactBtn" class="btn btn-secondary btn-sm mt-2">Add Another Contact</button>
+        </div>
+
+        <!-- Save Changes Button for Entire Form -->
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-danger">Save Changes</button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.getElementById("addContactBtn").addEventListener("click", function() {
+    const emergencyContacts = document.getElementById("emergencyContacts");
+    const contactCount = document.querySelectorAll(".emergency-contact").length;
+    const newContactHtml = `
+        <div class="emergency-contact mb-3" style="padding-top: 10px;">
+            <div class="mb-3 row">
+                <label class="col-sm-4 col-form-label"><strong>Nome do Contato</strong></label>
+                <div class="col-sm-8">
+                    <input type="text" name="contatoemergencia_set-${contactCount}-nome_contato" class="form-control" placeholder="Nome do Contato" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-4 col-form-label"><strong>Celular do Contato</strong></label>
+                <div class="col-sm-8">
+                    <input type="text" name="contatoemergencia_set-${contactCount}-celular_contato" class="form-control" placeholder="Celular do Contato" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-4 col-form-label"><strong>Email do Contato</strong></label>
+                <div class="col-sm-8">
+                    <input type="email" name="contatoemergencia_set-${contactCount}-email_contato" class="form-control" placeholder="Email do Contato" required>
+                </div>
+            </div>
+            <div class="text-end mt-2">
+                <button type="button" class="remove-contact btn btn-danger btn-sm">Remove</button>
+            </div>
+            <hr class="mt-3"> <!-- Line separator for each new contact -->
+        </div>
+    `;
+    emergencyContacts.insertAdjacentHTML("beforeend", newContactHtml);
+});
+
+document.addEventListener("click", function(e) {
+    if (e.target.classList.contains("remove-contact")) {
+        e.target.closest(".emergency-contact").remove();
+    }
+});
+</script>
+{% endblock %}

@@ -3,13 +3,14 @@ from django.views import View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Policial, Local, Hospital
-from .forms import PolicialForm, ContatoEmergenciaForm
+from .forms import PolicialForm, ContatoEmergenciaForm, HospitalForm, ContatoEmergenciaFormSet
 from .geocoding import get_geocode
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
 from reportlab.lib.utils import ImageReader
 
+from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponse
 import qrcode
 import io
@@ -122,6 +123,57 @@ def hospital(request):
         return JsonResponse({"success": True, "message": "Hospital salvo com sucesso!"})
     else:
         return render(request, 'sections/hospital.html', {'is_homepage': False})
+
+
+def edit_policial(request, pk):
+    policial = get_object_or_404(Policial, pk=pk)
+    if request.method == 'POST':
+        form = PolicialForm(request.POST, instance=policial)
+        formset = ContatoEmergenciaFormSet(request.POST, instance=policial)
+        if form.is_valid() and formset.is_valid():
+            form.save()
+            formset.save()
+            return JsonResponse({'status': 'success', 'message': 'Policial and contacts updated successfully!'})
+    else:
+        form = PolicialForm(instance=policial)
+        formset = ContatoEmergenciaFormSet(instance=policial)
+    return render(request, 'sections/edit_policial.html', {'form': form, 'formset': formset, 'policial': policial})
+
+def delete_policial(request, pk):
+    policial = get_object_or_404(Policial, pk=pk)
+    if request.method == 'POST':
+        policial.delete()
+        return JsonResponse({'status': 'success', 'message': 'Policial deleted successfully!'})
+    return render(request, 'sections/delete_confirm.html', {'object': policial, 'type': 'Policial'})
+
+def edit_hospital(request, pk):
+    hospital = get_object_or_404(Hospital, pk=pk)
+    if request.method == 'POST':
+        form = HospitalForm(request.POST, instance=hospital)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'status': 'success', 'message': 'Hospital updated successfully!'})
+    else:
+        form = HospitalForm(instance=hospital)
+    return render(request, 'sections/edit_hospital.html', {'form': form, 'hospital': hospital})
+
+def delete_hospital(request, pk):
+    hospital = get_object_or_404(Hospital, pk=pk)
+    if request.method == 'POST':
+        hospital.delete()
+        return JsonResponse({'status': 'success', 'message': 'Hospital deleted successfully!'})
+    return render(request, 'sections/delete_confirm.html', {'object': hospital, 'type': 'Hospital'})
+
+
+def list_policial(request):
+    policiais = Policial.objects.all()
+    return render(request, 'sections/list_policial.html', {'policiais': policiais})
+
+def list_hospital(request):
+    hospitals = Hospital.objects.all()
+    return render(request, 'sections/list_hospital.html', {'hospitals': hospitals})
+
+
 
 def criar_pevam(request):
     if request.method == 'POST':

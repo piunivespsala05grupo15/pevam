@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4 zoomable"><strong>POLICIAIS </strong>CADASTRADOS</h1>
+    <ul class="list-group">
+        {% for policial in policiais %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ policial.nome }}
+                <div>
+                    <a href="{% url 'edit_policial' policial.id %}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{% url 'delete_policial' policial.id %}" class="btn btn-sm btn-danger">Delete</a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

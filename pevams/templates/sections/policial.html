@@ -5,9 +5,10 @@
     <div class="d-flex align-items-center alturaMaior">
         <div class="col-12 col-md-8 col-lg-6 mx-auto"> <!-- Centraliza horizontalmente e ajusta o tamanho da coluna -->
             <h1 class="text-center mb-4 zoomable">CADASTRAR <strong>POLICIAL</strong></h1>
-            <form id="cadastroPessoaForm">
+            <form id="cadastroPessoaForm" method="post">
                 {% csrf_token %}
                 
+                <!-- Policial fields -->
                 <div class="mb-3 row">
                     <label for="id_numero_registro" class="col-sm-4 col-form-label zoomable"><strong>N° REGISTRO</strong></label>
                     <div class="col-sm-8">
@@ -63,8 +64,34 @@
                             placeholder="0000000" required>
                     </div>
                 </div>
-                
-                <div class="mb-3 row">
+
+                <!-- Emergency Contacts Section -->
+                <h3 class="mt-4">Contatos de Emergência</h3>
+                <div id="emergencyContacts">
+                    <div class="emergency-contact mb-3">
+                        <div class="mb-3 row">
+                            <label class="col-sm-4 col-form-label zoomable"><strong>Nome do Contato</strong></label>
+                            <div class="col-sm-8">
+                                <input type="text" name="contatoemergencia_set-0-nome_contato" class="form-control" placeholder="Nome do Contato" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-4 col-form-label zoomable"><strong>Celular do Contato</strong></label>
+                            <div class="col-sm-8">
+                                <input type="text" name="contatoemergencia_set-0-celular_contato" class="form-control" placeholder="Celular do Contato" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-4 col-form-label zoomable"><strong>Email do Contato</strong></label>
+                            <div class="col-sm-8">
+                                <input type="email" name="contatoemergencia_set-0-email_contato" class="form-control" placeholder="Email do Contato" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" id="addContactBtn" class="btn btn-secondary mt-2">Add Another Contact</button>
+
+                <div class="mb-3 row mt-4">
                     <div class="col-sm-8 offset-lg-4 text-end">
                         <button type="submit" class="btn btn-danger zoomable">CADASTRAR</button>
                     </div>
@@ -77,130 +104,41 @@
 </div>
 
 <script>
-	document.getElementById('id_numero_registro').addEventListener('input', function (e) {
-        e.target.value = e.target.value.replace(/[^0-9.-]/g, ''); // Permitir apenas números, ponto e hífen
-    });
 
-    document.getElementById('id_numero_plasau').addEventListener('input', function (e) {
+document.getElementById('id_numero_registro').addEventListener('input', function (e) {
         e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
     });
 
-    document.getElementById('cadastroPessoaForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        console.log("Formulário enviado");
+document.getElementById('id_numero_plasau').addEventListener('input', function (e) {
+	e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
+});
 
-        const formData = new FormData(this);
-
-        fetch('{% url "policial" %}', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Sucesso!',
-                    text: 'Pessoa cadastrada com sucesso!',
-                    confirmButtonText: 'Ok',
-					confirmButtonColor: '#dc3545',
-                }).then(() => {
-                    cadastrarContatoEmergencia(data.policial_id);
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Erro!',
-                    text: data.message || 'Erro ao cadastrar pessoa.',
-                    confirmButtonText: 'Ok'
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Erro!',
-                text: 'Erro ao cadastrar pessoa. Por favor, tente novamente.',
-                confirmButtonText: 'Ok'
-            });
-        });
-    });
-
-    function cadastrarContatoEmergencia(policialId) {
-    function showContactForm() {
-        Swal.fire({
-            title: 'Cadastrar Contato de Emergência',
-            html: `
-                <input type="text" id="nome_contato" class="swal2-input" placeholder="Nome do Contato">
-                <input type="text" id="celular_contato" class="swal2-input" placeholder="Celular do Contato">
-                <input type="text" id="email_contato" class="swal2-input" placeholder="Email do Contato">
-            `,
-			confirmButtonColor: '#dc3545',
-            focusConfirm: false,
-            preConfirm: () => {
-                const nomeContato = document.getElementById('nome_contato').value;
-                const celularContato = document.getElementById('celular_contato').value;
-                const emailContato = document.getElementById('email_contato').value;
-
-                const contatoData = new FormData();
-                contatoData.append('policial_id', policialId);
-                contatoData.append('nome_contato', nomeContato);
-                contatoData.append('celular_contato', celularContato);
-                contatoData.append('email_contato', emailContato);
-
-                return fetch('{% url "contato_emergencia" %}', {
-                    method: 'POST',
-                    body: contatoData,
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}',
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status !== 'success') {
-                        throw new Error(data.message || 'Erro ao cadastrar contato de emergência.');
-                    }
-                });
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Sucesso!',
-                    text: 'Contato de emergência cadastrado com sucesso!',
-                    confirmButtonText: 'Adicionar Outro Contato',
-					confirmButtonColor: '#dc3545',
-                    showCancelButton: true,
-                    cancelButtonText: 'Finalizar'
-                }).then((nextAction) => {
-                    if (nextAction.isConfirmed) {
-                        showContactForm();
-                    } else {
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Finalizado',
-                            text: 'Cadastro de contatos de emergência finalizado.',
-                            confirmButtonText: 'Ok',
-							confirmButtonColor: '#dc3545',
-                        });
-                    }
-                });
-            }
-        }).catch((error) => {
-            Swal.fire({
-                icon: 'error',
-                title: 'Erro!',
-                text: error.message,
-                confirmButtonText: 'Ok'
-            });
-        });
-    }
-
-    showContactForm();
-}
+document.getElementById("addContactBtn").addEventListener("click", function() {
+    const emergencyContacts = document.getElementById("emergencyContacts");
+    const contactCount = document.querySelectorAll(".emergency-contact").length;
+    const newContactHtml = `
+        <div class="emergency-contact mb-3">
+            <div class="mb-3 row">
+                <label class="col-sm-4 col-form-label zoomable"><strong>Nome do Contato</strong></label>
+                <div class="col-sm-8">
+                    <input type="text" name="contatoemergencia_set-${contactCount}-nome_contato" class="form-control" placeholder="Nome do Contato" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-4 col-form-label zoomable"><strong>Celular do Contato</strong></label>
+                <div class="col-sm-8">
+                    <input type="text" name="contatoemergencia_set-${contactCount}-celular_contato" class="form-control" placeholder="Celular do Contato" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-4 col-form-label zoomable"><strong>Email do Contato</strong></label>
+                <div class="col-sm-8">
+                    <input type="email" name="contatoemergencia_set-${contactCount}-email_contato" class="form-control" placeholder="Email do Contato" required>
+                </div>
+            </div>
+        </div>
+    `;
+    emergencyContacts.insertAdjacentHTML("beforeend", newContactHtml);
+});
 </script>
 {% endblock %}
