@@ -18,7 +18,7 @@
                 {% csrf_token %}
 
                 <div class="row mb-3 align-items-center">
-                    <label for="{{ form.username.id_for_label }}" class="col-sm-4 col-form-label text-end"><strong>Username</strong></label>
+                    <label for="{{ form.username.id_for_label }}" class="col-sm-4 col-form-label text-end"><strong>Usuário</strong></label>
                     <div class="col-sm-8">
                         {{ form.username }}
                         {% for error in form.username.errors %}
