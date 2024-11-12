@@ -2,28 +2,84 @@ from django.shortcuts import render
 from django.views import View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Policial, Local, Hospital
-from .forms import PolicialForm, ContatoEmergenciaForm, HospitalForm, ContatoEmergenciaFormSet
+from .models import Policial, Local, Hospital, ContatoEmergencia
+from .forms import PolicialForm, ContatoEmergenciaForm, HospitalForm
 from .geocoding import get_geocode
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
 from reportlab.lib.utils import ImageReader
 
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from .forms import CustomUserCreationForm
+
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponse
 import qrcode
 import io
 import base64
+from django.contrib.auth.decorators import login_required
 
 
+def cadastro_agente(request):
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect("home")
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'sections/cadastro_agente.html', {'form': form})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('realizados')  # Página de destino após o login
+            else:
+                error_message = "Usuário ou senha incorretos. Por favor, tente novamente."
+                return render(request, 'sections/login.html', {'form': form, 'error_message': error_message})
+        else:
+            error_message = "Formulário inválido. Por favor, tente novamente."
+            return render(request, 'sections/login.html', {'form': form, 'error_message': error_message})
+    else:
+        form = AuthenticationForm()
+
+    return render(request, 'sections/login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('login_view')
+
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')  # Redirect to home or another page after login
+    else:
+        form = AuthenticationForm()
+
+    return render(request, 'sections/login.html', {'form': form})
+
+@login_required(login_url='login_view')
 def home(request):
     return render(request, 'sections/home.html', {'is_homepage': True})
 
-@csrf_exempt
+@login_required(login_url='login_view')
 def policial(request):
     if request.method == 'POST':
         form_data = request.POST
+
         policial = Policial(
             numero_registro=form_data['numero_registro'],
             nome=form_data['nome'],
@@ -34,10 +90,20 @@ def policial(request):
         )
         policial.save()
 
-        return JsonResponse({'status': 'success', 'policial_id': policial.id})    
+        contato_emergencia = ContatoEmergencia(
+            policial=policial,
+            nome_contato=form_data['nome_contato'],
+            celular_contato=form_data['celular_contato'],
+            email_contato=form_data['email_contato']
+        )
+        contato_emergencia.save()
+
+        return redirect('list_policial')
+
     return render(request, 'sections/policial.html', {'is_homepage': False})
 
 @csrf_exempt
+@login_required(login_url='login_view')
 def contato_emergencia(request):
     if request.method == 'POST':
         policial_id = request.POST.get('policial_id')
@@ -62,6 +128,7 @@ def contato_emergencia(request):
 
     return JsonResponse({'status': 'error', 'message': 'Método inválido.'})
 
+@login_required(login_url='login_view')
 def local(request):
     if request.method == "POST":
         logradouro = request.POST.get("logradouro")
@@ -89,9 +156,7 @@ def local(request):
     else:
         return render(request, 'sections/local.html', {'is_homepage': False})
     
-from django.http import JsonResponse
-from .models import Hospital
-
+@login_required(login_url='login_view')
 def hospital(request):
     if request.method == "POST":
         nome = request.POST.get("nome")
@@ -116,29 +181,37 @@ def hospital(request):
             cep=cep,
             latitude=float(latitude),
             longitude=float(longitude),
-            telefone=telefone
+            telefone=telefone,
+            forma_entrada=forma_entrada
         )
         hospital.save()
 
-        return JsonResponse({"success": True, "message": "Hospital salvo com sucesso!"})
-    else:
-        return render(request, 'sections/hospital.html', {'is_homepage': False})
+        return redirect('list_hospital')
 
+    return render(request, 'sections/hospital.html', {'is_homepage': False})
 
+@login_required(login_url='login_view')
 def edit_policial(request, pk):
     policial = get_object_or_404(Policial, pk=pk)
+    contato_emergencia = getattr(policial, 'contato_emergencia', None)
+    
     if request.method == 'POST':
         form = PolicialForm(request.POST, instance=policial)
-        formset = ContatoEmergenciaFormSet(request.POST, instance=policial)
-        if form.is_valid() and formset.is_valid():
+        contato_form = ContatoEmergenciaForm(request.POST, instance=contato_emergencia)
+
+        if form.is_valid() and contato_form.is_valid():
             form.save()
-            formset.save()
-            return redirect('list_policial')  # Redirect to the list of policiais or a success page
+            contato = contato_form.save(commit=False)
+            contato.policial = policial  # Link the contact to the policial
+            contato.save()
+            return redirect('list_policial')
     else:
         form = PolicialForm(instance=policial)
-        formset = ContatoEmergenciaFormSet(instance=policial)
-    return render(request, 'sections/edit_policial.html', {'form': form, 'formset': formset, 'policial': policial})
+        contato_form = ContatoEmergenciaForm(instance=contato_emergencia)
+    
+    return render(request, 'sections/edit_policial.html', {'form': form, 'contato_form': contato_form})
 
+@login_required(login_url='login_view')
 def delete_policial(request, pk):
     policial = get_object_or_404(Policial, pk=pk)
     if request.method == 'POST':
@@ -146,6 +219,7 @@ def delete_policial(request, pk):
         return redirect('list_policial')
     return render(request, 'sections/delete_confirm.html', {'object': policial, 'type': 'Policial'})
 
+@login_required(login_url='login_view')
 def edit_hospital(request, pk):
     hospital = get_object_or_404(Hospital, pk=pk)
     if request.method == 'POST':
@@ -157,6 +231,7 @@ def edit_hospital(request, pk):
         form = HospitalForm(instance=hospital)
     return render(request, 'sections/edit_hospital.html', {'form': form, 'hospital': hospital})
 
+@login_required(login_url='login_view')
 def delete_hospital(request, pk):
     hospital = get_object_or_404(Hospital, pk=pk)
     if request.method == 'POST':
@@ -164,17 +239,18 @@ def delete_hospital(request, pk):
         return redirect('list_hospital')
     return render(request, 'sections/delete_confirm.html', {'object': hospital, 'type': 'Hospital'})
 
-
+@login_required(login_url='login_view')
 def list_policial(request):
     policiais = Policial.objects.all()
     return render(request, 'sections/list_policial.html', {'policiais': policiais})
 
+@login_required(login_url='login_view')
 def list_hospital(request):
     hospitals = Hospital.objects.all()
     return render(request, 'sections/list_hospital.html', {'hospitals': hospitals})
 
 
-
+@login_required(login_url='login_view')
 def criar_pevam(request):
     if request.method == 'POST':
         endereco = request.POST.get('endereco')

@@ -6,9 +6,9 @@
     <div class="d-flex align-items-center alturaMaior">
         <div class="col-12 col-md-8 col-lg-6 mx-auto">
             <h2 class="mb-4 text-center zoomable">ATUALIZAR <strong>INFORMAÇÕES - HOSPITAL</strong></h2>
-            <form id="editHospitalForm">
+            <form method="post" action="{% url 'edit_hospital' hospital.id %}">
                 {% csrf_token %}
-                
+
                 <!-- NOME Field -->
                 <div class="mb-3 row">
                     <label for="nome" class="col-md-3 col-form-label zoomable"><strong>NOME</strong></label>
@@ -16,7 +16,7 @@
                         {{ form.nome|add_class:"form-control zoomable" }}
                     </div>
                 </div>
-                
+
                 <!-- CEP Field -->
                 <div class="mb-3 row">
                     <label for="cep" class="col-md-3 col-form-label zoomable"><strong>CEP</strong></label>
@@ -104,54 +104,7 @@
                     </div>
                 </div>
             </form>
-            
-            <div id="mensagem" class="mt-3"></div>
         </div>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-document.getElementById('editHospitalForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const formData = new FormData(this);
-
-    fetch("{% url 'edit_hospital' hospital.id %}", {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}',
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            Swal.fire({
-                icon: 'success',
-                title: 'Sucesso!',
-                text: data.message,
-                confirmButtonText: 'Ok'
-            }).then(() => {
-                window.location.href = '{% url "home" %}';
-            });
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Erro!',
-                text: data.message || 'Erro ao atualizar o hospital.',
-                confirmButtonText: 'Ok'
-            });
-        }
-    })
-    .catch(error => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Erro!',
-            text: 'Erro ao enviar o formulário. Tente novamente mais tarde.',
-            confirmButtonText: 'Ok'
-        });
-        console.error("Erro:", error);
-    });
-});
-</script>
 {% endblock %}

@@ -1,7 +1,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
     <a class="navbar-brand zoomable" href="{% url 'home' %}">
-        {% load static %}<img class="img-logo"  src="{% static 'images/red_cross.png' %}" width="30" height="30"
+        {% load static %}<img class="img-logo" src="{% static 'images/red_cross.png' %}" width="30" height="30"
             class="d-inline-block align-top" alt="cruz vermelha">
     </a>
 
@@ -14,47 +14,52 @@
     <!-- Conteúdo do menu que colapsa em telas menores -->
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav d-flex justify-content-between align-items-center w-100">
-			<div class="d-flex justify-content-center align-items-center">
-				<li class="nav-item">
-					<a class="nav-link navItemBold zoomable" href="{% url 'criar_pevam' %}">GERAR PEVAM</a>
-				</li>
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle navItemBold zoomable" href="#" id="navbarDropdownMenuLink" 
-						role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						CADASTRAR
-					</a>
-					<ul class="dropdown-menu bg-danger zoomable" aria-labelledby="navbarDropdownMenuLink">
-						<li><a class="dropdown-item navItemBold zoomable" href="{% url 'policial' %}">POLICIAL</a></li>
-						<li><a class="dropdown-item navItemBold zoomable" href="{% url 'hospital' %}">HOSPITAL</a></li>
-					</ul>
-				</li>
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle navItemBold zoomable" href="#" id="navbarDropdownMenuLink" 
-						role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						ATUALIZAR
-					</a>
-					<ul class="dropdown-menu bg-danger zoomable" aria-labelledby="navbarDropdownMenuLink">
-						<li><a class="dropdown-item navItemBold zoomable" href="{% url 'list_policial' %}">POLICIAL</a></li>
-						<li><a class="dropdown-item navItemBold zoomable" href="{% url 'list_hospital' %}">HOSPITAL</a></li>
-					</ul>
-				</li>
-			</div>
-			<div>
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle navItemBold zoomable" href="#" id="navbarDropdownMenuLink" 
-						role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						ACESSIBILIDADE
-					</a>
-					<ul class="dropdown-menu bg-danger zoomable" aria-labelledby="navbarDropdownMenuLinks">
-						<li class="nav-item" class="dropdown-item navItemBold zoomable">
-							<button id="toggleZoom" class="btn btn-outline-light nav-link">LUPA</button>
-						</li>
-						<li class="nav-item" class="dropdown-item navItemBold zoomable">
-							<button id="toggleContrast" class="btn btn-outline-light nav-link">ALTO CONTRASTE</button>
-						</li>
-					</ul>
-				</li>
-			</div>
+            <div class="d-flex justify-content-center align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link navItemBold zoomable" href="{% url 'criar_pevam' %}">GERAR PEVAM</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle navItemBold zoomable" href="#" id="navbarDropdownMenuLink" 
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        CADASTRAR
+                    </a>
+                    <ul class="dropdown-menu bg-danger zoomable" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item navItemBold zoomable" href="{% url 'policial' %}">POLICIAL</a></li>
+                        <li><a class="dropdown-item navItemBold zoomable" href="{% url 'hospital' %}">HOSPITAL</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle navItemBold zoomable" href="#" id="navbarDropdownMenuLink" 
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        ATUALIZAR
+                    </a>
+                    <ul class="dropdown-menu bg-danger zoomable" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item navItemBold zoomable" href="{% url 'list_policial' %}">POLICIAL</a></li>
+                        <li><a class="dropdown-item navItemBold zoomable" href="{% url 'list_hospital' %}">HOSPITAL</a></li>
+                    </ul>
+                </li>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle navItemBold zoomable" href="#" id="navbarDropdownMenuLink" 
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        ACESSIBILIDADE
+                    </a>
+                    <ul class="dropdown-menu bg-danger zoomable" aria-labelledby="navbarDropdownMenuLinks">
+                        <li class="nav-item" class="dropdown-item navItemBold zoomable">
+                            <button id="toggleZoom" class="btn btn-outline-light nav-link">LUPA</button>
+                        </li>
+                        <li class="nav-item" class="dropdown-item navItemBold zoomable">
+                            <button id="toggleContrast" class="btn btn-outline-light nav-link">ALTO CONTRASTE</button>
+                        </li>
+                    </ul>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link navItemBold zoomable" href="{% url 'logout_view' %}">LOGOUT</a>
+                </li>
+                {% endif %}
+            </div>
         </ul>
     </div>
 </nav>

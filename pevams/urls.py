@@ -14,4 +14,8 @@ urlpatterns = [
     path('pevam/', views.criar_pevam, name='criar_pevam'),
     path('policial/list/', views.list_policial, name='list_policial'),
     path('hospital/list/', views.list_hospital, name='list_hospital'),
+	
+    path('cadastro_agente/', views.cadastro_agente, name='cadastro_agente'),
+    path('login/', views.login_view, name='login_view'),
+    path('logout/', views.logout_view, name='logout_view'),
 ]

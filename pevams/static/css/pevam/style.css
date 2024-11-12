@@ -286,3 +286,6 @@ body {
         margin-top: 10px;
     }
 }
+.emergency-contact input[type="checkbox"] {
+	display: none;
+}

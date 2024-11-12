@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Policial(models.Model):
     TIPO_SANGUE_CHOICES = [
@@ -21,13 +22,12 @@ class Policial(models.Model):
 
     def __str__(self):
         return self.nome
-    
+
 class ContatoEmergencia(models.Model):
-    policial = models.ForeignKey(Policial, on_delete=models.CASCADE)
+    policial = models.OneToOneField(Policial, on_delete=models.CASCADE, related_name='contato_emergencia')
     nome_contato = models.CharField(max_length=100)
     celular_contato = models.CharField(max_length=15)
     email_contato = models.CharField(max_length=50)
-
 
     def __str__(self):
         return self.nome_contato
@@ -64,4 +64,7 @@ class Hospital(models.Model):
 
     def __str__(self):
         return self.nome
+
+class User(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container mt-5">
     <div class="d-flex align-items-center alturaMaior">
-        <div class="col-12 col-md-8 col-lg-6 mx-auto"> <!-- Centraliza horizontalmente e ajusta o tamanho da coluna -->
+        <div class="col-12 col-md-8 col-lg-6 mx-auto">
             <h1 class="text-center mb-4 zoomable">CADASTRAR <strong>POLICIAL</strong></h1>
             <form id="cadastroPessoaForm" method="post">
                 {% csrf_token %}
@@ -65,31 +65,28 @@
                     </div>
                 </div>
 
-                <!-- Emergency Contacts Section -->
-                <h3 class="mt-4">Contatos de Emergência</h3>
-                <div id="emergencyContacts">
-                    <div class="emergency-contact mb-3">
-                        <div class="mb-3 row">
-                            <label class="col-sm-4 col-form-label zoomable"><strong>Nome do Contato</strong></label>
-                            <div class="col-sm-8">
-                                <input type="text" name="contatoemergencia_set-0-nome_contato" class="form-control" placeholder="Nome do Contato" required>
-                            </div>
+                <!-- Single Emergency Contact Section -->
+                <h3 class="mt-4">Contato de Emergência</h3>
+                <div class="emergency-contact mb-3">
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label zoomable"><strong>Nome do Contato</strong></label>
+                        <div class="col-sm-8">
+                            <input type="text" name="nome_contato" class="form-control" placeholder="Nome do Contato" required>
                         </div>
-                        <div class="mb-3 row">
-                            <label class="col-sm-4 col-form-label zoomable"><strong>Celular do Contato</strong></label>
-                            <div class="col-sm-8">
-                                <input type="text" name="contatoemergencia_set-0-celular_contato" class="form-control" placeholder="Celular do Contato" required>
-                            </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label zoomable"><strong>Celular do Contato</strong></label>
+                        <div class="col-sm-8">
+                            <input type="text" name="celular_contato" class="form-control" placeholder="Celular do Contato" required>
                         </div>
-                        <div class="mb-3 row">
-                            <label class="col-sm-4 col-form-label zoomable"><strong>Email do Contato</strong></label>
-                            <div class="col-sm-8">
-                                <input type="email" name="contatoemergencia_set-0-email_contato" class="form-control" placeholder="Email do Contato" required>
-                            </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label zoomable"><strong>Email do Contato</strong></label>
+                        <div class="col-sm-8">
+                            <input type="email" name="email_contato" class="form-control" placeholder="Email do Contato" required>
                         </div>
                     </div>
                 </div>
-                <button type="button" id="addContactBtn" class="btn btn-secondary mt-2">Add Another Contact</button>
 
                 <div class="mb-3 row mt-4">
                     <div class="col-sm-8 offset-lg-4 text-end">
@@ -104,41 +101,12 @@
 </div>
 
 <script>
-
 document.getElementById('id_numero_registro').addEventListener('input', function (e) {
-        e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
-    });
-
-document.getElementById('id_numero_plasau').addEventListener('input', function (e) {
-	e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
+    e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
 });
 
-document.getElementById("addContactBtn").addEventListener("click", function() {
-    const emergencyContacts = document.getElementById("emergencyContacts");
-    const contactCount = document.querySelectorAll(".emergency-contact").length;
-    const newContactHtml = `
-        <div class="emergency-contact mb-3">
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label zoomable"><strong>Nome do Contato</strong></label>
-                <div class="col-sm-8">
-                    <input type="text" name="contatoemergencia_set-${contactCount}-nome_contato" class="form-control" placeholder="Nome do Contato" required>
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label zoomable"><strong>Celular do Contato</strong></label>
-                <div class="col-sm-8">
-                    <input type="text" name="contatoemergencia_set-${contactCount}-celular_contato" class="form-control" placeholder="Celular do Contato" required>
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label zoomable"><strong>Email do Contato</strong></label>
-                <div class="col-sm-8">
-                    <input type="email" name="contatoemergencia_set-${contactCount}-email_contato" class="form-control" placeholder="Email do Contato" required>
-                </div>
-            </div>
-        </div>
-    `;
-    emergencyContacts.insertAdjacentHTML("beforeend", newContactHtml);
+document.getElementById('id_numero_plasau').addEventListener('input', function (e) {
+    e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
 });
 </script>
 {% endblock %}
