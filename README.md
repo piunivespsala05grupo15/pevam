@@ -12,7 +12,13 @@
 
 ## Features
 
+- Login/Logout
 - Cadastrar Polciial
 - Cadastrar Hospital
 - Gerar PEVAM
+- Atualizar Dados
 - Acessibilidade
+
+## Deploy
+
+Aplicação em produção dia 11/11/2024 no endereço [pevam.pythonanywhere.com](pevam.pythonanywhere.com)
