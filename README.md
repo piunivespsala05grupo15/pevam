@@ -8,7 +8,7 @@
 
 ## Summary
 > <i>Projeto integrador do segundo semestre de 2024. Aplicação Web desenvolvida em Django (Python). </i>
-> <i>The backend uses Django and the frontend uses the bootstrap toolkit. </i>
+> <i>O backend usa Django e o frontend usa o bootstrap toolkit. </i>
 
 ## Features
 
