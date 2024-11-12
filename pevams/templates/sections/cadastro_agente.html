@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container-fluid" style="height: calc(100vh - 60px);">
     <div class="container d-flex justify-content-center align-items-center h-100">
-        <div class="col-md-8 col-lg-6">
+        <div class="col-12 col-md-8 col-lg-6">
             <h1 class="text-center mb-4 ms-5">CADASTRAR <strong>USUÁRIO</strong></h1>
             
             {% if form.non_field_errors %}
@@ -18,8 +18,8 @@
                 {% csrf_token %}
 
                 <div class="row mb-3 align-items-center">
-                    <label for="{{ form.username.id_for_label }}" class="col-sm-4 col-form-label text-end"><strong>Usuário</strong></label>
-                    <div class="col-sm-8">
+                    <label for="{{ form.username.id_for_label }}" class="col-12 col-sm-4 col-form-label text-sm-end mb-2 mb-sm-0"><strong>Usuário</strong></label>
+                    <div class="col-12 col-sm-8">
                         {{ form.username }}
                         {% for error in form.username.errors %}
                             <div class="text-danger">{{ error }}</div>
@@ -28,8 +28,8 @@
                 </div>
 
                 <div class="row mb-3 align-items-center">
-                    <label for="{{ form.password1.id_for_label }}" class="col-sm-4 col-form-label text-end"><strong>Senha</strong></label>
-                    <div class="col-sm-8">
+                    <label for="{{ form.password1.id_for_label }}" class="col-12 col-sm-4 col-form-label text-sm-end mb-2 mb-sm-0"><strong>Senha</strong></label>
+                    <div class="col-12 col-sm-8">
                         {{ form.password1 }}
                         {% for error in form.password1.errors %}
                             <div class="text-danger">{{ error }}</div>
@@ -38,8 +38,8 @@
                 </div>
 
                 <div class="row mb-3 align-items-center">
-                    <label for="{{ form.password2.id_for_label }}" class="col-sm-4 col-form-label text-end"><strong>Confirme a Senha</strong></label>
-                    <div class="col-sm-8">
+                    <label for="{{ form.password2.id_for_label }}" class="col-12 col-sm-4 col-form-label text-sm-end mb-2 mb-sm-0"><strong>Confirme a Senha</strong></label>
+                    <div class="col-12 col-sm-8">
                         {{ form.password2 }}
                         {% for error in form.password2.errors %}
                             <div class="text-danger">{{ error }}</div>
@@ -47,11 +47,12 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-sm-8 offset-sm-4 text-end">
-                        <button type="submit" class="btn btn-danger">Cadastrar</button>
+                <div class="mb-3 row">
+                    <div class="col-sm-4 offset-sm-2 text-end">
+                        <button type="submit" class="btn btn-danger">CADASTRAR</button>
                     </div>
                 </div>
+        </div>
             </form>
         </div>
     </div>
