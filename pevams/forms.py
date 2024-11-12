@@ -21,7 +21,7 @@ class HospitalForm(forms.ModelForm):
         fields = ['nome', 'logradouro', 'numero', 'complemento', 'bairro', 'cidade', 'cep', 'latitude', 'longitude', 'telefone', 'forma_entrada']
 
 class CustomUserCreationForm(UserCreationForm):
-    username = forms.CharField(label="Username", max_length=150, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    username = forms.CharField(label="Usuário", max_length=150, widget=forms.TextInput(attrs={'class': 'form-control'}))
     password1 = forms.CharField(label="Senha", widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     password2 = forms.CharField(label="Confirme a Senha", widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
