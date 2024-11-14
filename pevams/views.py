@@ -308,7 +308,7 @@ def criar_pevam(request):
         # Convert the QR code image to a BytesIO object
         qr_buffer = io.BytesIO()
         img.save(qr_buffer, format='PNG')
-        qr_buffer.seek(0)  # Move to the beginning of the BytesIO buffer
+        qr_buffer.seek(0)
 
         # Generate PDF
         pdf_buffer = io.BytesIO()
@@ -330,11 +330,11 @@ def criar_pevam(request):
         p.drawImage(qr_image, width - 2 * inch, height - 2.5 * inch, 1.5 * inch, 1.5 * inch)
 
         # Draw a line with slightly less padding below the QR code
-        line_y_position = height - 2.7 * inch  # Reduced space
+        line_y_position = height - 2.7 * inch
         p.line(1 * inch, line_y_position, width - 1 * inch, line_y_position)
 
         # Police officers' information with structured emergency contacts
-        y = line_y_position - 0.4 * inch  # Slightly less space after line
+        y = line_y_position - 0.4 * inch
         p.setFont("Helvetica-Bold", 12)
         p.drawString(1 * inch, y, "Detalhes dos Policiais:")
         y -= 0.3 * inch
@@ -345,23 +345,22 @@ def criar_pevam(request):
             p.drawString(1 * inch, y - 0.2 * inch, f"Tipo Sanguíneo: {policial.tipo_sanguineo} | Plano de Saúde: {policial.plano_saude}")
             y -= 0.6 * inch
 
-            # Emergency contacts for each police officer
-            contatos_emergencia = policial.contatoemergencia_set.all()
-            if contatos_emergencia:
+            # Emergency contact for each police officer
+            contato_emergencia = policial.contato_emergencia
+            if contato_emergencia:
                 p.setFont("Helvetica-Bold", 10)
-                p.drawString(1 * inch + 0.2 * inch, y, "Contatos de Emergência:")
+                p.drawString(1 * inch + 0.2 * inch, y, "Contato de Emergência:")
                 y -= 0.3 * inch
-                for contato in contatos_emergencia:
-                    p.setFont("Helvetica", 10)
-                    p.drawString(1 * inch + 0.4 * inch, y, f"Nome: {contato.nome_contato}")
-                    p.drawString(1 * inch + 0.4 * inch, y - 0.2 * inch, f"Celular: {contato.celular_contato} | Email: {contato.email_contato}")
-                    y -= 0.6 * inch
+                p.setFont("Helvetica", 10)
+                p.drawString(1 * inch + 0.4 * inch, y, f"Nome: {contato_emergencia.nome_contato}")
+                p.drawString(1 * inch + 0.4 * inch, y - 0.2 * inch, f"Celular: {contato_emergencia.celular_contato} | Email: {contato_emergencia.email_contato}")
+                y -= 0.6 * inch
 
             # Extra space between different officers
             y -= 0.4 * inch
 
-            if y < 1 * inch:  # Check to avoid printing too low
-                p.showPage()  # Start a new page if needed
+            if y < 1 * inch:
+                p.showPage()
                 y = height - 1 * inch
 
         # Finalize PDF
