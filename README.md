@@ -8,11 +8,17 @@
 
 ## Summary
 > <i>Projeto integrador do segundo semestre de 2024. Aplicação Web desenvolvida em Django (Python). </i>
-> <i>The backend uses Django and the frontend uses the bootstrap toolkit. </i>
+> <i>O backend usa Django e o frontend usa o bootstrap toolkit. </i>
 
 ## Features
 
+- Login/Logout
 - Cadastrar Polciial
 - Cadastrar Hospital
 - Gerar PEVAM
+- Atualizar Dados
 - Acessibilidade
+
+## Deploy
+
+Aplicação em produção dia 11/11/2024 no endereço [pevam.pythonanywhere.com](pevam.pythonanywhere.com)
