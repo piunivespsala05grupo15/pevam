@@ -59,7 +59,7 @@ class Hospital(models.Model):
     cep = models.CharField(max_length=8)
     latitude = models.FloatField()
     longitude = models.FloatField()
-    telefone = models.CharField(max_length=10)
+    telefone = models.CharField(max_length=16)
     forma_entrada = models.CharField(max_length=50, choices=TIPO_ENTRADA_CHOICES)
 
     def __str__(self):

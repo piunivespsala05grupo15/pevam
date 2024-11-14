@@ -10,6 +10,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
 from reportlab.lib.utils import ImageReader
 
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import CustomUserCreationForm
@@ -155,7 +156,7 @@ def local(request):
         return JsonResponse({"success": True, "message": "Endereço salvo com sucesso!"})
     else:
         return render(request, 'sections/local.html', {'is_homepage': False})
-    
+
 @login_required(login_url='login_view')
 def hospital(request):
     if request.method == "POST":
@@ -171,24 +172,28 @@ def hospital(request):
         telefone = request.POST.get("telefone")
         forma_entrada = request.POST.get("forma-de-entrada")
 
-        hospital = Hospital(
-            nome=nome,
-            logradouro=logradouro,
-            numero=numero,
-            complemento=complemento,
-            bairro=bairro,
-            cidade=cidade,
-            cep=cep,
-            latitude=float(latitude),
-            longitude=float(longitude),
-            telefone=telefone,
-            forma_entrada=forma_entrada
-        )
-        hospital.save()
-
-        return redirect('list_hospital')
-
+        try:
+            hospital = Hospital(
+                nome=nome,
+                logradouro=logradouro,
+                numero=numero,
+                complemento=complemento,
+                bairro=bairro,
+                cidade=cidade,
+                cep=cep,
+                latitude=float(latitude),
+                longitude=float(longitude),
+                telefone=telefone,
+                forma_entrada=forma_entrada
+            )
+            hospital.save()
+            messages.success(request, 'Hospital cadastrado com sucesso!')
+            return redirect('list_hospital')
+        except Exception as e:
+            messages.error(request, f'Erro ao cadastrar hospital: {e}')
+    
     return render(request, 'sections/hospital.html', {'is_homepage': False})
+
 
 @login_required(login_url='login_view')
 def edit_policial(request, pk):
